@@ -49,25 +49,25 @@ float noise(vec2 uv) {
 float fbm(vec2 uv) {
   const int octaves = 6;
   float amplitude = 0.5;
-  float frequency = 4.0;
+  float frequency = 3.0;
 float value = 0.0;
 
   for(int i = 0; i < octaves; i++) {
       value += amplitude * noise(frequency * uv);
       amplitude *= 0.5;
-      frequency *= 2.0;
+      frequency *= 2.1;
   }
   return value;
 }
 
 void main()
 {
-  vec2 uv = gl_FragCoord.xy/u_resolution.xy;
+  vec2 uv = gl_FragCoord.xy / u_resolution.xy;
   uv.x *= u_resolution.x / u_resolution.y;
 
-  vec3 white = vec3(1.0, 0.98, 0.95);
-  //vec3 black = vec3(0.0, 0.0, 1.0);
-  vec3 black = hsv2rgb(vec3(u_hue, 1.0, 1.0));
+  vec3 white = vec3(0.08, 0.08, 0.08);
+  vec3 black = vec3(1.0, 0.98, 0.95);
+  // vec3 black = hsv2rgb(vec3(u_hue, 1.0, 1.0));
 
   vec3 color1 = mix(white, black, invert);
   vec3 color2 = mix(black, white, invert);
