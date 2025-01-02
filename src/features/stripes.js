@@ -18,8 +18,8 @@ function stripes(zoomRef, grainRef, oscRef, hueRef) {
   }
 
   const calcSize = function () {
-    let ww = window.innerWidth
-    let wh = window.innerHeight
+    let ww = canvas.clientWidth
+    let wh = canvas.clientHeight
     let dpi = window.devicePixelRatio
 
     canvas.width = ww * dpi

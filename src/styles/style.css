@@ -23,6 +23,6 @@
 
 #stripe_canvas {
   /* border: 1px solid blue; */
-  width: 100%;
-  height: 100svh;
+  width: 100svw;
+  height: 101svh;
 }

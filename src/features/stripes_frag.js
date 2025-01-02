@@ -62,7 +62,8 @@ float value = 0.0;
 
 void main()
 {
-  vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+  //vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+  vec2 uv = v_texcoord;
   uv.x *= u_resolution.x / u_resolution.y;
 
   vec3 white = vec3(0.08, 0.08, 0.08);
