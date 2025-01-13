@@ -26,3 +26,8 @@
   width: 100svw;
   height: 101svh;
 }
+
+#filter_canvas {
+  width: 100%;
+  height: auto;
+}

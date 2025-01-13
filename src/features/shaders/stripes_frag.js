@@ -1,4 +1,4 @@
-const frag = `
+const stripes_frag = `
 #ifdef GL_ES
 precision highp float;
 #endif
@@ -8,7 +8,6 @@ precision highp float;
 uniform float u_time;
 uniform vec2 u_resolution;
 uniform vec2 u_mouse;
-uniform float invert;
 uniform float u_zoom;
 uniform float u_grain;
 uniform float u_osc;
@@ -62,39 +61,56 @@ float value = 0.0;
 
 void main()
 {
-  //vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+
+  // CREO EL VECTOR UV Y LO AJUSTO A RESOLLUCION
+
   vec2 uv = v_texcoord;
   uv.x *= u_resolution.x / u_resolution.y;
 
+  // CREO EL VECTOR MOUSE, LO AJUSTO A RESOLUCION Y CREO LA VARIABLE DE FUERZA (contraria a DISTANCIA)
+
+  vec2 mouse = u_mouse / u_resolution;
+  mouse.x *= u_resolution.x / u_resolution.y;
+  float dist = distance(uv, mouse);
+  float strength = smoothstep(0.5, 0.0, dist);
+
+  // CREO MIS COLORES
+
+  float invert = 1.0;
   vec3 white = vec3(0.08, 0.08, 0.08);
   vec3 black = vec3(1.0, 0.98, 0.95);
-  // vec3 black = hsv2rgb(vec3(u_hue, 1.0, 1.0));
-
   vec3 color1 = mix(white, black, invert);
   vec3 color2 = mix(black, white, invert);
  
-  vec2 move = vec2(uv.x + 0.01 * u_time, uv.y + 0.05 * u_time);
- 
+  // CREO el vector MOVE y el MIXFACTOR con FBM! Esto es lo que le va a dar el movimiento GENERAL
+
+  vec2 move = vec2(uv.x + 0.01 * u_time, uv.y + 0.02 * u_time);
   float mixFactor = fbm(0.2 * move);
+
+  // COJO la PARTE FRACCIONAL para que se repita hasta el INFINITO. Utilizo u_zoom para meterle zoom desde UX
+
   mixFactor = (15.0 + u_zoom) * fract(mixFactor);
 
-  mixFactor += smoothstep(-1.0 * u_grain, u_grain, random(uv));
+  // GRANULADO con la función MIX y usando el MOUSE
+
+  float grain = mix(-u_grain * strength, u_grain * strength, random(uv));
+  mixFactor += grain;
+
+  // GENERO LA SENSACIÓN DE VIDA PROPIA
 
   mixFactor += u_osc * sin(mix(0.0, 1.0, u_osc / 40.0 * u_time));
-
   mixFactor += 0.05 * abs(sin(10.0 * uv.x + 1.0 * u_time));
   mixFactor += 0.05 * abs(sin(10.0 * uv.y + 1.0 * u_time));
   mixFactor = 15.0 * fract(mixFactor);
 
+  // ELIMINO HARD EDGES (x como esta hecho, invierte colores)
+
   mixFactor = smoothstep(0.0, 0.2, mixFactor) -  smoothstep(0.8,1.0,mixFactor);
- 
-  //mixFactor += smoothstep(0.0,0.9,random(uv));
-  //mixFactor *= 0.35;
+
+  // OUTPUT
  
   vec3 col = mix(color1, color2, mixFactor);
-
-  // Output to screen
   gl_FragColor = vec4(col,1.0);
 }
 `
-export default frag
+export default stripes_frag

@@ -1,6 +1,6 @@
 import GlslCanvas from 'glslCanvas'
 
-import frag from './stripes_frag'
+import stripes_frag from './stripes_frag'
 
 function stripes(zoomRef, grainRef, oscRef, hueRef) {
   const canvas = document.querySelector('#stripe_canvas')
@@ -30,7 +30,7 @@ function stripes(zoomRef, grainRef, oscRef, hueRef) {
 
   const sandbox = new GlslCanvas(canvas)
 
-  const fragment_shader = frag
+  const fragment_shader = stripes_frag
   sandbox.load(fragment_shader)
   sandbox.setUniform('u_resolution', [canvas.width, canvas.height])
   sandbox.setUniform('u_zoom', zoomRef.current)
