@@ -1,10 +1,10 @@
 import gsap from 'gsap'
 
-import stripes from './shaders/stripes'
+import stripes from '../shaders/stripes'
 
 function handleStripes() {
-  const sliders = document.querySelectorAll('.axis')
-  const handles = document.querySelectorAll('.axis-drag')
+  const sliders = document.querySelectorAll('.axis-fbm')
+  const handles = document.querySelectorAll('.axis-drag-fbm')
 
   let isDragging = false
   let currentHandle = null

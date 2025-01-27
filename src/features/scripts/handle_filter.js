@@ -1,10 +1,10 @@
 import gsap from 'gsap'
 
-import filter from './shaders/filter'
+import filter from '../shaders/filter'
 
 function handleFilter() {
-  const sliders = document.querySelectorAll('.axis')
-  const handles = document.querySelectorAll('.axis-drag')
+  const sliders = document.querySelectorAll('.axis-filter')
+  const handles = document.querySelectorAll('.axis-drag-filter')
 
   let isDragging = false
   let currentHandle = null

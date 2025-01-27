@@ -31,3 +31,8 @@
   width: 100%;
   height: auto;
 }
+
+#padmi_canvas {
+  width: 100svw;
+  height: 100svh;
+}
