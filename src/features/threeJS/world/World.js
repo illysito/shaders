@@ -4,7 +4,7 @@ import { createCube } from '../components/cube.js'
 import { createScene } from '../components/scene.js'
 import { createText } from '../components/text.js'
 import { Loop } from '../systems/Loop.js'
-import { createRenderer } from '../systems/renderer.js'
+import { createRenderer } from '../systems/Renderer.js'
 import { Resizer } from '../systems/Resizer.js'
 
 let camera
