@@ -1,5 +1,6 @@
 import gsap from 'gsap'
 import html2canvas from 'html2canvas'
+import { Vector2 } from 'three'
 import { MeshBasicMaterial } from 'three'
 import { CanvasTexture, ShaderMaterial, PlaneGeometry, Mesh } from 'three'
 
@@ -25,14 +26,15 @@ async function createPlane() {
   const planeH = 5
   const planeW = planeH * aspect
 
+  let prevMouse = new Vector2(0.0, 0.0)
+
   const uniforms = {
     u_time: { value: 0.0 },
     u_mouseX: { value: 0.0 },
     u_mouseY: { value: 0.0 },
-    u_prevMouse: { value: [0.0, 0.0] },
+    u_prevMouse: { value: prevMouse },
     u_texture: { value: texture },
     u_aspect: { value: [canvasW, canvasH] },
-    u_inertiaFactor: { value: 0.51 },
   }
 
   // Step 3: Use the Texture in a Shader
@@ -46,7 +48,6 @@ async function createPlane() {
     varying vec2 vUv;
 
     uniform vec2 u_prevMouse;
-    uniform float u_inertiaFactor;
 
     void main() {
       
@@ -65,13 +66,12 @@ async function createPlane() {
       vec2 prevMouse = u_prevMouse;
       prevMouse.y = 1.0 - u_prevMouse.y;
       prevMouse.x *= asp;
-      vec2 inertiaMouse = mix(prevMouse, u_mouse, u_inertiaFactor);
 
-      float dist = distance(inertiaMouse, normalized_coords);
+      float dist = distance(prevMouse, normalized_coords);
 
       // DISTORTION
 
-      float radius = 0.2 * abs(sin(0.1 * u_time)) + 0.05;
+      float radius = 0.16 * sin(0.3 * u_time) + 0.05;
       float strength = 0.0;
       // float strength = mix(1.0, 0.0, smoothstep(radius, radius * 1.2, dist));
       // float strength = mix(0.0, 0.1, dist);
@@ -94,8 +94,8 @@ async function createPlane() {
       // float y = floor(coords.y * blocks) / blocks;
 
       vec2 distortion = vec2(
-        sin(0.5 * inertiaMouse.x - 2.1 * x + 2.2 * y),
-        cos(0.5 * inertiaMouse.y + 2.1 * x - 2.8 * y)
+        sin(0.5 * prevMouse.x - 2.1 * x + 2.2 * y),
+        cos(0.5 * prevMouse.y + 2.1 * x - 2.8 * y)
       ); 
 
       distortion *= 0.8 * strength;
@@ -141,13 +141,19 @@ async function createPlane() {
     const mouseX = gsap.utils.mapRange(0, window.innerWidth, 0.0, 1.0, event.clientX)
     //prettier-ignore
     const mouseY = gsap.utils.mapRange(0, window.innerHeight, 0.0, 1.0, event.clientY)
-    uniforms.u_mouseX.value = mouseX
-    // console.log('mouseX: ' + mouseX)
-    uniforms.u_mouseY.value = mouseY
-    // console.log('mouseY: ' + mouseY)
-    uniforms.u_prevMouseX.value = [mouseX, mouseY]
 
-    // console.log('prevMouse: ' + uniforms.u_prevMouse.value)
+    const inertiaFactor = 0.99
+    //prettier-ignore
+    const inertiaMouseX = gsap.utils.interpolate(prevMouse.x, mouseX, inertiaFactor)
+    //prettier-ignore
+    const inertiaMouseY = gsap.utils.interpolate(prevMouse.y, mouseY, inertiaFactor)
+
+    uniforms.u_mouseX.value = mouseX
+    uniforms.u_mouseY.value = mouseY
+
+    uniforms.u_prevMouse.value.set(inertiaMouseX, inertiaMouseY)
+
+    prevMouse.set(mouseX, mouseY)
   })
 
   return mesh
