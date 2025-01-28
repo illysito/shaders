@@ -8,7 +8,7 @@ async function createPlane() {
   const heroElement = document.getElementById('hero-container')
   // const canvas = document.getElementById('canvas')
   const renderedCanvas = await html2canvas(heroElement, {
-    backgroundColor: '#fffbf6',
+    backgroundColor: '#0e0e0e',
     width: heroElement.offsetWidth, // or any specific width
     height: heroElement.offsetHeight,
   })
@@ -29,8 +29,10 @@ async function createPlane() {
     u_time: { value: 0.0 },
     u_mouseX: { value: 0.0 },
     u_mouseY: { value: 0.0 },
+    u_prevMouse: { value: [0.0, 0.0] },
     u_texture: { value: texture },
-    u_aspect: { value: aspect },
+    u_aspect: { value: [canvasW, canvasH] },
+    u_inertiaFactor: { value: 0.51 },
   }
 
   // Step 3: Use the Texture in a Shader
@@ -39,29 +41,67 @@ async function createPlane() {
     uniform float u_mouseX;
     uniform float u_mouseY;
     uniform float u_time;
-    uniform float u_aspect;
+    uniform vec2 u_aspect;
 
     varying vec2 vUv;
 
-    void main() {
-      vec2 coords = vUv;
-      // coords = mix(vec2(0.1, 0.1), vec2(0.9, 0.9), coords);
-      vec2 u_mouse = vec2(u_mouseX, u_mouseY);
-      float dist = distance(u_mouse, coords);
-      float strength = 0.1;
-      strength = smoothstep(1.0, 0.0, dist);
-      strength = smoothstep(0.2, 2.8, strength);
+    uniform vec2 u_prevMouse;
+    uniform float u_inertiaFactor;
 
-      float blocks = 40.0;
-      float x = floor(coords.x * u_aspect * blocks) / (u_aspect * blocks);
-      float y = floor(coords.y * blocks) / blocks;
+    void main() {
+      
+      // COORDINATES
+
+      vec2 coords = vUv;
+      vec2 normalized_coords = coords;
+      float asp = u_aspect.x / u_aspect.y;
+      normalized_coords.x *= asp;
+
+      // MOUSE
+
+      vec2 u_mouse = vec2(u_mouseX, u_mouseY);
+      u_mouse.y = 1.0 - u_mouse.y;
+      u_mouse.x *= asp;
+      vec2 prevMouse = u_prevMouse;
+      prevMouse.y = 1.0 - u_prevMouse.y;
+      prevMouse.x *= asp;
+      vec2 inertiaMouse = mix(prevMouse, u_mouse, u_inertiaFactor);
+
+      float dist = distance(inertiaMouse, normalized_coords);
+
+      // DISTORTION
+
+      float radius = 0.2 * abs(sin(0.1 * u_time)) + 0.05;
+      float strength = 0.0;
+      // float strength = mix(1.0, 0.0, smoothstep(radius, radius * 1.2, dist));
+      // float strength = mix(0.0, 0.1, dist);
+
+      // CONFINADO EN UN CIRCULO : UTIL PARA EFECTO DE ONDAS ESTANQUE
+      // if (dist < radius) {
+      //   strength = smoothstep(0.0, radius, dist);
+      //   strength = smoothstep(0.2, 5.8, strength);
+      // }
+
+      // FLOW NORMAL
+      strength = smoothstep(0.3, radius, dist);
+      strength = smoothstep(0.2, 5.8, strength);
+
+      // DIVIDING IN BLOCKS
+      float blocks = 1.0;
+      float x = coords.x;
+      float y = coords.y;
+      // float x = floor(coords.x * asp * blocks) / (asp * blocks);
+      // float y = floor(coords.y * blocks) / blocks;
 
       vec2 distortion = vec2(
-        sin(2.0 * u_time + 0.6 * u_mouse.x - 2.1 * x + 2.2 * y),
-        cos(u_time + 0.6 * u_mouse.y + 2.1 * x - 2.8 * y)
+        sin(0.5 * inertiaMouse.x - 2.1 * x + 2.2 * y),
+        cos(0.5 * inertiaMouse.y + 2.1 * x - 2.8 * y)
       ); 
 
-      distortion *= 1.0 * strength;
+      distortion *= 0.8 * strength;
+      distortion = smoothstep(0.0, 0.2, distortion);
+
+      // OUTPUT
 
       vec4 color = texture2D(u_texture, coords - distortion);
       gl_FragColor = color;
@@ -100,9 +140,14 @@ async function createPlane() {
     //prettier-ignore
     const mouseX = gsap.utils.mapRange(0, window.innerWidth, 0.0, 1.0, event.clientX)
     //prettier-ignore
-    const mouseY = gsap.utils.mapRange(0, window.innerWidth, 0.0, 1.0, event.clientY)
+    const mouseY = gsap.utils.mapRange(0, window.innerHeight, 0.0, 1.0, event.clientY)
     uniforms.u_mouseX.value = mouseX
+    // console.log('mouseX: ' + mouseX)
     uniforms.u_mouseY.value = mouseY
+    // console.log('mouseY: ' + mouseY)
+    uniforms.u_prevMouseX.value = [mouseX, mouseY]
+
+    // console.log('prevMouse: ' + uniforms.u_prevMouse.value)
   })
 
   return mesh
