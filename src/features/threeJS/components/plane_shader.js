@@ -71,7 +71,7 @@ async function createPlane() {
 
       // DISTORTION
 
-      float radius = 0.16 * sin(0.3 * u_time) + 0.05;
+      float radius = 0.16 * sin(0.3 * u_time) + 0.05 * abs(sin(0.2 * u_time));
       float strength = 0.0;
       // float strength = mix(1.0, 0.0, smoothstep(radius, radius * 1.2, dist));
       // float strength = mix(0.0, 0.1, dist);
