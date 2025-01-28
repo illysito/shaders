@@ -25,6 +25,7 @@
   "dependencies": {
     "glslCanvas": "^0.2.6",
     "gsap": "^3.12.5",
+    "html2canvas": "^1.4.1",
     "three": "^0.172.0"
   }
 }

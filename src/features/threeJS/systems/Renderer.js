@@ -1,7 +1,8 @@
 import { WebGLRenderer } from 'three'
 
 function createRenderer() {
-  const renderer = new WebGLRenderer({ antialias: true, alpha: true })
+  //prettier-ignore
+  const renderer = new WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true, })
   renderer.physicallyCorrectLights = true
 
   return renderer

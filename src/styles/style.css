@@ -36,3 +36,9 @@
   width: 100svw;
   height: 100svh;
 }
+
+#hero-container {
+  width: 100%;
+  height: 100svh;
+  /* Or set a fixed height if necessary */
+}

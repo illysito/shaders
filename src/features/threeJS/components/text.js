@@ -97,18 +97,23 @@ float fbm(vec3 x) {
     vec3 newPosition = position;
     vec2 mouse = vec2(u_mouseX, u_mouseY);
 
-    float dist = distance(mouse, uv);
-    float strength = smoothstep(1.0, 0.0, dist);
+    // Calculate distance from vertex to mouse
+    float dist = distance(mouse, position.xy);
 
-    float radius = 1.0;
-    float noise = fbm(2.5 * position + 0.95 * u_time);
-    radius *= mix(0.5, 1.5, noise);
-    radius += smoothstep(0.8, 1.2, noise);
+    // Create distortion based on distance
+    float strength = 0.5 * exp(-dist * 5.0); // Adjust falloff
+    float wave = 10.0 * sin(u_time * 3.0 + dist * 5.0) * 0.1;
+    newPosition.x += strength * wave;
 
-    newPosition *= radius;
+    //float radius = 1.0;
+    //float noise = fbm(2.5 * position + 0.95 * u_time);
+    //radius *= mix(0.5, 1.5, noise);
+    //radius += smoothstep(0.8, 1.2, noise);
 
-    newPosition.x += smoothstep(0.0, 2.0, mouse.x);
-    newPosition.y -= smoothstep(1.0, 2.0, mouse.y);
+    //newPosition *= radius;
+
+    //newPosition.x += smoothstep(0.0, 2.0, mouse.x);
+    //newPosition.y -= smoothstep(1.0, 2.0, mouse.y);
 
     // Standard vertex position transformation
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
@@ -136,11 +141,12 @@ float fbm(vec3 x) {
     float z = v_position.z;
 
     float mixer = (x + y + z) * sin(2.0 * (x + y + z)  * u_time);
+    mixer = v_position.x;
     mixer = smoothstep(-2.0, 1.0, mixer);
 
     vec4 color = mix(color1, color2, mixer);
 
-    gl_FragColor = color;
+    gl_FragColor = color1;
   }
   `
 
@@ -150,7 +156,7 @@ float fbm(vec3 x) {
     height: 0,
     size: 1,
     bevelEnabled: false,
-    curveSegments: 30,
+    curveSegments: 300,
   })
   console.log(textGeometry)
 
@@ -158,6 +164,7 @@ float fbm(vec3 x) {
   const dpi = 150
   //prettier-ignore
   const sphereGeometry = new SphereGeometry(radius, 2 * dpi, 2 * dpi)
+  console.log(sphereGeometry)
 
   const textMaterial = new ShaderMaterial({
     vertexShader,
@@ -166,9 +173,9 @@ float fbm(vec3 x) {
     uniforms,
   })
 
-  const points = new Points(sphereGeometry, textMaterial)
+  const points = new Points(textGeometry, textMaterial)
 
-  const type = new Mesh(sphereGeometry, textMaterial)
+  const type = new Mesh(textGeometry, textMaterial)
   // centerType(sphereGeometry, type)
   centerType(sphereGeometry, points)
 

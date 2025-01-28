@@ -1,5 +1,6 @@
 import { createCamera } from '../components/camera.js'
 import { createCube } from '../components/cube.js'
+import { createPlane } from '../components/plane_shader.js'
 // import { createPointLight } from '../components/point_light.js'
 import { createScene } from '../components/scene.js'
 import { createText } from '../components/text.js'
@@ -22,7 +23,8 @@ class World {
     container.append(renderer.domElement)
 
     // const point_light = createPointLight(0, 0, 3, 50, '#fffbf6')
-    this.initText()
+    // this.initText()
+    this.initPlane()
     // this.initCube()
 
     // scene.add(point_light)
@@ -41,6 +43,15 @@ class World {
   initCube() {
     const cube = createCube()
     scene.add(cube)
+  }
+
+  async initPlane() {
+    const plane = await createPlane()
+    loop.updatables.push(plane)
+    if (plane) {
+      scene.add(plane)
+    }
+    this.render()
   }
 
   // 2. Render the scene
