@@ -1,29 +1,27 @@
 import gsap from 'gsap'
 import html2canvas from 'html2canvas'
 import { Vector2 } from 'three'
-import { MeshBasicMaterial } from 'three'
+// import { MeshBasicMaterial } from 'three'
 import { CanvasTexture, ShaderMaterial, PlaneGeometry, Mesh } from 'three'
+
+//prettier-ignore
+import { warp_type_frag, warp_type_vertex } from '../../shaders/warp_type_shader.js'
 
 async function createPlane() {
   // Step 1: Render HTML to a Canvas
   const heroElement = document.getElementById('hero-container')
-  // const canvas = document.getElementById('canvas')
   const renderedCanvas = await html2canvas(heroElement, {
     backgroundColor: '#0e0e0e',
-    width: heroElement.offsetWidth, // or any specific width
+    width: heroElement.offsetWidth,
     height: heroElement.offsetHeight,
   })
-  renderedCanvas.style.border = '1px solid #0000ff'
-  // document.body.appendChild(renderedCanvas)
-
-  // Step 2: Create a Texture from the Canvas
   const texture = new CanvasTexture(renderedCanvas)
   texture.needsUpdate = true
 
   const canvasW = renderedCanvas.width
   const canvasH = renderedCanvas.height
   const aspect = canvasW / canvasH
-  const planeH = 5
+  const planeH = 6
   const planeW = planeH * aspect
 
   let prevMouse = new Vector2(0.0, 0.0)
@@ -37,95 +35,18 @@ async function createPlane() {
     u_aspect: { value: [canvasW, canvasH] },
   }
 
-  // Step 3: Use the Texture in a Shader
-  const fragmentShader = `
-    uniform sampler2D u_texture;
-    uniform float u_mouseX;
-    uniform float u_mouseY;
-    uniform float u_time;
-    uniform vec2 u_aspect;
+  const fragmentShader = warp_type_frag
 
-    varying vec2 vUv;
+  const vertexShader = warp_type_vertex
 
-    uniform vec2 u_prevMouse;
-
-    void main() {
-      
-      // COORDINATES
-
-      vec2 coords = vUv;
-      vec2 normalized_coords = coords;
-      float asp = u_aspect.x / u_aspect.y;
-      normalized_coords.x *= asp;
-
-      // MOUSE
-
-      vec2 u_mouse = vec2(u_mouseX, u_mouseY);
-      u_mouse.y = 1.0 - u_mouse.y;
-      u_mouse.x *= asp;
-      vec2 prevMouse = u_prevMouse;
-      prevMouse.y = 1.0 - u_prevMouse.y;
-      prevMouse.x *= asp;
-
-      float dist = distance(prevMouse, normalized_coords);
-
-      // DISTORTION
-
-      float radius = 0.16 * sin(0.3 * u_time) + 0.05 * abs(sin(0.2 * u_time));
-      float strength = 0.0;
-      // float strength = mix(1.0, 0.0, smoothstep(radius, radius * 1.2, dist));
-      // float strength = mix(0.0, 0.1, dist);
-
-      // CONFINADO EN UN CIRCULO : UTIL PARA EFECTO DE ONDAS ESTANQUE
-      // if (dist < radius) {
-      //   strength = smoothstep(0.0, radius, dist);
-      //   strength = smoothstep(0.2, 5.8, strength);
-      // }
-
-      // FLOW NORMAL
-      strength = smoothstep(0.3, radius, dist);
-      strength = smoothstep(0.2, 5.8, strength);
-
-      // DIVIDING IN BLOCKS
-      float blocks = 1.0;
-      float x = coords.x;
-      float y = coords.y;
-      // float x = floor(coords.x * asp * blocks) / (asp * blocks);
-      // float y = floor(coords.y * blocks) / blocks;
-
-      vec2 distortion = vec2(
-        sin(0.5 * prevMouse.x - 2.1 * x + 2.2 * y),
-        cos(0.5 * prevMouse.y + 2.1 * x - 2.8 * y)
-      ); 
-
-      distortion *= 0.8 * strength;
-      distortion = smoothstep(0.0, 0.2, distortion);
-
-      // OUTPUT
-
-      vec4 color = texture2D(u_texture, coords - distortion);
-      gl_FragColor = color;
-    }
-  `
-
-  const vertexShader = `
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `
-
-  // Step 4: Set up the Three.js Material with the Shader
   const material = new ShaderMaterial({
     uniforms,
     vertexShader,
     fragmentShader,
   })
-  // console.log(material)
 
-  const meshMaterial = new MeshBasicMaterial({ map: texture })
-  console.log(meshMaterial)
+  // const meshMaterial = new MeshBasicMaterial({ map: texture })
+  // console.log(meshMaterial)
 
   // Step 5: Create a Plane to Display the Shader
   const geometry = new PlaneGeometry(planeW, planeH)
@@ -155,6 +76,19 @@ async function createPlane() {
 
     prevMouse.set(mouseX, mouseY)
   })
+
+  // async function updateTexture() {
+  //   const updatedCanvas = await html2canvas(heroElement, {
+  //     backgroundColor: '#0e0e0e',
+  //     width: heroElement.offsetWidth, // or any specific width
+  //     height: heroElement.offsetHeight,
+  //   })
+  //   texture.image = updatedCanvas
+  //   texture.needsUpdate = true
+  //   requestAnimationFrame(updateTexture)
+  // }
+
+  // updateTexture()
 
   return mesh
 }

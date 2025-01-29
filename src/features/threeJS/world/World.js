@@ -26,7 +26,6 @@ class World {
     // this.initText()
     this.initPlane()
     // this.initCube()
-
     // scene.add(point_light)
 
     const resizer = new Resizer(container, camera, renderer)
@@ -42,7 +41,11 @@ class World {
 
   initCube() {
     const cube = createCube()
-    scene.add(cube)
+    loop.updatables.push(cube)
+    if (cube) {
+      scene.add(cube)
+    }
+    this.render()
   }
 
   async initPlane() {
