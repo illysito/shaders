@@ -3,9 +3,10 @@ import gsap from 'gsap'
 import { SphereGeometry, Mesh, MeshStandardMaterial, ShaderMaterial, TorusGeometry, Group } from 'three'
 
 function createBall() {
+  const size = 2
   // THE BALL!
   // GEOMETRY
-  const geometry = new SphereGeometry(0.8, 64, 64)
+  const geometry = new SphereGeometry(size, 64, 64)
   // MATERIAL
   const ball_material = new MeshStandardMaterial({
     color: 0x32cd32, // Tennis ball green
@@ -108,21 +109,21 @@ function createBall() {
     color.x = 0.6 * smoothstep(0.0, 1.0, xyz.x);
     color.y = 0.8 * smoothstep(0.0, 1.0, xyz.x);
     color.z = 0.1 * smoothstep(0.0, 1.0, xyz.x);
-    gl_FragColor = vec4(color, 0.5);
+    gl_FragColor = vec4(color, 0.01);
   }
 `
   const ball_material_2 = new ShaderMaterial({
     uniforms,
     vertexShader: ballVertexShader,
     fragmentShader: ballFragmentShader,
-    transparent: true,
+    transparent: false,
   })
   // MESH
   const ball = new Mesh(geometry, ball_material_2)
 
   // THE SEAM
   // GEOMETRY
-  const seamGeometry = new TorusGeometry(0.8, 0.025, 16, 100)
+  const seamGeometry = new TorusGeometry(size, 0.025, 32 * size, 100 * size)
   // MATERIAL
   const vertexShader = `
   varying vec2 vUv;
