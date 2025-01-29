@@ -1,7 +1,8 @@
+import { createBall } from '../components/ball.js'
 import { createCamera } from '../components/camera.js'
 import { createCube } from '../components/cube.js'
 import { createPlane } from '../components/plane_shader.js'
-// import { createPointLight } from '../components/point_light.js'
+import { createPointLight } from '../components/point_light.js'
 import { createScene } from '../components/scene.js'
 import { createText } from '../components/text.js'
 import { Loop } from '../systems/Loop.js'
@@ -22,11 +23,14 @@ class World {
     loop = new Loop(camera, scene, renderer)
     container.append(renderer.domElement)
 
-    // const point_light = createPointLight(0, 0, 3, 50, '#fffbf6')
     // this.initText()
     this.initPlane()
     // this.initCube()
-    // scene.add(point_light)
+    this.initBall()
+
+    // LIGHTS
+    const point_light = createPointLight(0, 0, 3, 50, '#fffbf6')
+    scene.add(point_light)
 
     const resizer = new Resizer(container, camera, renderer)
     console.log('in World Class - mandatory (resizer object): ' + resizer)
@@ -44,6 +48,15 @@ class World {
     loop.updatables.push(cube)
     if (cube) {
       scene.add(cube)
+    }
+    this.render()
+  }
+
+  initBall() {
+    const ball = createBall()
+    loop.updatables.push(ball)
+    if (ball) {
+      scene.add(ball)
     }
     this.render()
   }

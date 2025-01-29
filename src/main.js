@@ -1,5 +1,6 @@
 import handleFilter from './features/scripts/handle_filter'
 import handleStripes from './features/scripts/handle_stripes'
+import nav from './features/scripts/w_nav'
 // import variableType from './features/scripts/variable_type'
 import world from './features/threeJS/world/world_module'
 
@@ -19,6 +20,7 @@ function runFilterShaders() {
 }
 
 function runPadmiShaders() {
+  nav()
   world(container)
   // function moveType() {
   //   counter++

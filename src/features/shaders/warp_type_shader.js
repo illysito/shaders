@@ -58,27 +58,45 @@ void main() {
   prevMouse.y = 1.0 - u_prevMouse.y;
   prevMouse.x *= asp;
 
+  // POINT
+
+  vec2 point = vec2(0.85, 0.5);
+
+  // DISTANCE
+
   float dist = distance(prevMouse, normalized_coords);
+  float static_dist = distance(point, normalized_coords);
 
   // DISTORTION
+
   float fbm = fbm(u_mouse);
 
   float radius = 0.5 * (0.16 * sin(0.3 * u_time) + 0.05 * abs(sin(0.2 * u_time)));
   float strength = 0.0;
+
+  float static_radius = 0.4 * (0.16 * sin(0.1 * u_time) + 0.25 * abs(sin(0.1 * u_time)));
+  float static_strength = 0.0;
+
   // float strength = mix(1.0, 0.0, smoothstep(radius, radius * 1.2, dist));
   // float strength = mix(0.0, 0.1, dist);
 
   // CONFINADO EN UN CIRCULO : UTIL PARA EFECTO DE ONDAS ESTANQUE
+
   // if (dist < radius) {
   //   strength = smoothstep(0.0, radius, dist);
   //   strength = smoothstep(0.2, 5.8, strength);
   // }
 
   // FLOW NORMAL
+
   strength = smoothstep(0.3, radius, dist);
   strength = smoothstep(0.2, 5.8, strength);
 
+  static_strength = smoothstep(0.3, static_radius, static_dist);
+  static_strength = smoothstep(0.2, 5.8, static_strength);
+
   // DIVIDING IN BLOCKS
+
   float blocks = 1.0;
   float x = coords.x;
   float y = coords.y;
@@ -90,9 +108,18 @@ void main() {
     cos(0.5 * prevMouse.y + 2.1 * x - 2.8 * y)
   ); 
 
+  vec2 static_distortion = vec2(
+    sin(0.5 * point.x - 2.1 * x + 2.2 * y),
+    cos(0.5 * point.y + 2.1 * x - 2.8 * y)
+  );
+
   distortion *= 0.8 * strength;
-  distortion = smoothstep(0.0, 0.2, distortion);
+  distortion = smoothstep(0.0, 0.2, clamp(distortion, 0.0, 1.0));
   distortion *= 2.0 * fbm;
+
+  static_distortion *= 0.8 * static_strength;
+  static_distortion = smoothstep(0.0, 0.2, clamp(static_distortion, 0.0, 1.0));
+  static_distortion *= 2.0 * fbm;
 
   vec2 center = vec2(0.5, 0.5);
   coords -= center;
@@ -101,6 +128,7 @@ void main() {
 
   // OUTPUT
 
+  // coords -= static_distortion;
   vec4 color = texture2D(u_texture, coords - distortion);
   gl_FragColor = color;
 }
