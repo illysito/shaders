@@ -1,10 +1,16 @@
 import gsap from 'gsap'
 //prettier-ignore
+// import {
+//   AdditiveBlending,
+// } from 'three'
+//prettier-ignore
 import { SphereGeometry, Mesh, MeshStandardMaterial, ShaderMaterial, TorusGeometry, Group } from 'three'
 
 function createBall() {
-  const size = 2
-  // THE BALL!
+  const size = 1.6
+  const limit = 0.9
+  let x_direction = false
+  let y_direction = false
   // GEOMETRY
   const geometry = new SphereGeometry(size, 64, 64)
   // MATERIAL
@@ -103,20 +109,31 @@ function createBall() {
   uniform vec3 u_color;
   varying vec2 vUv;
 
+  vec3 screenBlend(vec3 base, vec3 blend) {
+      return 1.0 - (1.0 - base) * (1.0 - blend);
+  }
+
+  vec3 differenceBlend(vec3 base, vec3 blend) {
+      return abs(base - blend);
+  }
+
   void main() {
     vec3 xyz = gl_FragCoord.xyz;
-    vec3 color = vec3(0.2,0.9,0.9);  // White seam color
-    color.x = 0.6 * smoothstep(0.0, 1.0, xyz.x);
-    color.y = 0.8 * smoothstep(0.0, 1.0, xyz.x);
-    color.z = 0.1 * smoothstep(0.0, 1.0, xyz.x);
-    gl_FragColor = vec4(color, 0.01);
+    vec3 color = vec3(0.72,0.99,0.24);  // White seam color
+
+    vec3 baseColor = color;          // Your defined color (e.g., vec3(0.72, 0.99, 0.24))
+    vec3 blendColor = color; // Normalized screen coordinates
+
+    vec3 finalColor = screenBlend(baseColor, blendColor); 
+
+    gl_FragColor = vec4(color, 0.1);
   }
 `
   const ball_material_2 = new ShaderMaterial({
     uniforms,
     vertexShader: ballVertexShader,
     fragmentShader: ballFragmentShader,
-    transparent: false,
+    transparent: true,
   })
   // MESH
   const ball = new Mesh(geometry, ball_material_2)
@@ -172,8 +189,25 @@ function createBall() {
     ballGroup.rotation.x += 0.15 * delta
     ballGroup.rotation.y += 0.13 * delta
     ballGroup.rotation.z += 0.18 * delta
-    ballGroup.position.x += uniforms.u_mouseX.value * delta
-    ballGroup.position.y += uniforms.u_mouseY.value * delta
+
+    //prettier-ignore
+    if (ballGroup.position.x >= (2 * limit) || ballGroup.position.x <= (-2 * limit)) {
+      x_direction = !x_direction
+    }
+    if (ballGroup.position.y >= limit || ballGroup.position.y <= -limit) {
+      y_direction = !y_direction
+    }
+
+    if (!x_direction) {
+      ballGroup.position.x += uniforms.u_mouseX.value * delta
+    } else {
+      ballGroup.position.x -= uniforms.u_mouseX.value * delta
+    }
+    if (!y_direction) {
+      ballGroup.position.y += uniforms.u_mouseY.value * delta
+    } else {
+      ballGroup.position.y -= uniforms.u_mouseY.value * delta
+    }
     // uniforms.u_mouseX.value = mouseX
     // uniforms.u_mouseY.value = mouseY
     // console.log('ticking' + uniforms.u_time)
@@ -187,7 +221,7 @@ function createBall() {
 
     uniforms.u_mouseX.value = mouseX
     uniforms.u_mouseY.value = mouseY
-    console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
+    // console.log('mouseX: ' + mouseX + ' mouseY: ' + mouseY)
   })
   // OUTPUT
   return ballGroup

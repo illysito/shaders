@@ -14,18 +14,16 @@ function handleStripes() {
   const MAX_ZOOM = 85.0
   const MAX_GRAIN = 0.1
   const MAX_OSC = 10.0
-  const MAX_HUE = 1.0
 
   let zoom = 5.0
-  let grain = 0.0
+  let grain = 0.025
   let osc = 2.0
-  let hue = 0.66
   const zoomRef = { current: zoom }
+  console.log(zoomRef.current)
   const grainRef = { current: grain }
   const oscRef = { current: osc }
-  const hueRef = { current: hue }
 
-  const updateUniforms = stripes(zoomRef, grainRef, oscRef, hueRef)
+  const updateUniforms = stripes(zoomRef, grainRef, oscRef)
 
   sliders.forEach((slider, i) => {
     const handle = handles[i]
@@ -77,17 +75,12 @@ function handleStripes() {
         console.log('HEY!: ' + osc)
         oscRef.current = osc
         updateUniforms()
-      } else if (currentIndex === 3) {
-        hue = gsap.utils.mapRange(0, sliderRect.width, 0, MAX_HUE, x)
-        console.log('HEY!: ' + hue)
-        hueRef.current = hue
-        updateUniforms()
       }
     }
   })
 
   console.log(oscRef.current)
-  updateUniforms(zoomRef, grainRef, oscRef, hueRef)
+  updateUniforms(zoomRef, grainRef, oscRef)
 }
 
 export default handleStripes

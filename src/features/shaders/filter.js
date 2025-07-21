@@ -38,7 +38,9 @@ function filter(redRef, greenRef, blueRef, noiseRef, redShiftRef, greenShiftRef,
   sandbox.load(fragment_shader)
   sandbox.setUniform('u_resolution', [canvas.width, canvas.height])
   //prettier-ignore
-  sandbox.setUniform('u_image', 'https://raw.githubusercontent.com/illysito/lukyanov-illya/c1073a3112aaadb6f12e6647924f72153fbbc83b/piesitos-edit.jpg')
+  const imageURL = 'https://raw.githubusercontent.com/illysito/padmi/624850fc2d7f98fa20d31aedc82ffb97fa0fd27b/PADMI%20HERO.png'
+  sandbox.setUniform('u_image', imageURL)
+
   sandbox.setUniform('u_red', redRef.current)
   sandbox.setUniform('u_green', greenRef.current)
   sandbox.setUniform('u_blue', blueRef.current)

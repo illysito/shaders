@@ -46,7 +46,7 @@ float noise(vec2 uv) {
 }
 
 float fbm(vec2 uv) {
-  const int octaves = 6;
+  const int octaves = 10;
   float amplitude = 0.5;
   float frequency = 3.0;
 float value = 0.0;
@@ -76,20 +76,21 @@ void main()
 
   // CREO MIS COLORES
 
-  float invert = 1.0;
+  float invert = 0.0;
   vec3 white = vec3(0.08, 0.08, 0.08);
   vec3 black = vec3(1.0, 0.98, 0.95);
-  vec3 color1 = mix(white, black, invert);
-  vec3 color2 = mix(black, white, invert);
+  vec3 green = vec3(0.18, 0.180, 0.180);
+  vec3 color1 = mix(white, green, invert);
+  vec3 color2 = mix(green, white, invert);
  
   // CREO el vector MOVE y el MIXFACTOR con FBM! Esto es lo que le va a dar el movimiento GENERAL
 
   vec2 move = vec2(uv.x + 0.01 * u_time, uv.y + 0.02 * u_time);
-  float mixFactor = fbm(0.2 * move);
+  float mixFactor = fbm(0.3 * move);
 
   // COJO la PARTE FRACCIONAL para que se repita hasta el INFINITO. Utilizo u_zoom para meterle zoom desde UX
 
-  mixFactor = (15.0 + u_zoom) * fract(mixFactor);
+  mixFactor = (2.0 + 0.1 * u_zoom) * fract(mixFactor);
 
   // GRANULADO con la función MIX y usando el MOUSE
 
@@ -98,14 +99,14 @@ void main()
 
   // GENERO LA SENSACIÓN DE VIDA PROPIA
 
-  mixFactor += u_osc * sin(mix(0.0, 1.0, u_osc / 40.0 * u_time));
+  mixFactor += u_osc * sin(mix(0.0, 1.0, u_osc / 40.0 * u_time + 0.1 * strength));
   mixFactor += 0.05 * abs(sin(10.0 * uv.x + 1.0 * u_time));
   mixFactor += 0.05 * abs(sin(10.0 * uv.y + 1.0 * u_time));
-  mixFactor = 15.0 * fract(mixFactor);
+  mixFactor = 3.0 * fract(mixFactor);
 
   // ELIMINO HARD EDGES (x como esta hecho, invierte colores)
 
-  mixFactor = smoothstep(0.0, 0.2, mixFactor) -  smoothstep(0.8,1.0,mixFactor);
+  mixFactor = smoothstep(0.0, 0.4, mixFactor) -  smoothstep(0.6, 1.0, mixFactor);
 
   // OUTPUT
  

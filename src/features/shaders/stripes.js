@@ -2,7 +2,7 @@ import GlslCanvas from 'glslCanvas'
 
 import stripes_frag from './stripes_frag'
 
-function stripes(zoomRef, grainRef, oscRef, hueRef) {
+function stripes(zoomRef, grainRef, oscRef) {
   const canvas = document.querySelector('#stripe_canvas')
   // console.log('zoom Object: ' + zoomRef.current)
 
@@ -36,7 +36,6 @@ function stripes(zoomRef, grainRef, oscRef, hueRef) {
   sandbox.setUniform('u_zoom', zoomRef.current)
   sandbox.setUniform('u_grain', grainRef.current)
   sandbox.setUniform('u_osc', oscRef.current)
-  sandbox.setUniform('u_hue', hueRef.current)
 
   function updateUniforms() {
     console.log('updating u_zoom:', zoomRef.current)
@@ -44,14 +43,12 @@ function stripes(zoomRef, grainRef, oscRef, hueRef) {
     sandbox.setUniform('u_zoom', zoomRef.current)
     sandbox.setUniform('u_grain', grainRef.current)
     sandbox.setUniform('u_osc', oscRef.current)
-    sandbox.setUniform('u_hue', hueRef.current)
     // sandbox.render() //Force re-render to reflect changes
   }
 
   window.addEventListener('resize', function () {
     calcSize()
   })
-
   return updateUniforms
 }
 

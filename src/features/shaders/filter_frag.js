@@ -48,7 +48,7 @@ void main()
   //uv.x *= u_resolution.x / u_resolution.y;
 
   // find out the ratios
-  float image_ratio = 1728.0 / 2304.0;
+  float image_ratio = 1920.0 / 1080.0;
   float canvas_ratio = u_resolution.x / u_resolution.y;
 
   vec2 coords = aspect(uv, image_ratio, canvas_ratio);
@@ -71,7 +71,8 @@ void main()
   noiseMixer = smoothstep(0.0, 1.0 + u_noiseFactor, noiseMixer);
   img += u_noiseFactor * noiseMixer;
 
-  gl_FragColor = img;
+  // gl_FragColor = img;
+  gl_FragColor = vec4(img.rgb * img.a, img.a);
 }
 `
 export default filter_frag
