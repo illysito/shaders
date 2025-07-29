@@ -46,7 +46,7 @@ float noise(vec2 uv) {
 }
 
 float fbm(vec2 uv) {
-  const int octaves = 10;
+  const int octaves = 16;
   float amplitude = 0.5;
   float frequency = 3.0;
 float value = 0.0;
@@ -76,7 +76,7 @@ void main()
 
   // CREO MIS COLORES
 
-  float invert = 0.0;
+  float invert = 1.0;
   vec3 white = vec3(0.08, 0.08, 0.08);
   vec3 black = vec3(1.0, 0.98, 0.95);
   vec3 green = vec3(0.18, 0.180, 0.180);
@@ -91,6 +91,7 @@ void main()
   // COJO la PARTE FRACCIONAL para que se repita hasta el INFINITO. Utilizo u_zoom para meterle zoom desde UX
 
   mixFactor = (2.0 + 0.1 * u_zoom) * fract(mixFactor);
+  mixFactor = (2.0 - 2.0 * sin(u_time)) * fract(mixFactor);
 
   // GRANULADO con la función MIX y usando el MOUSE
 
@@ -110,7 +111,7 @@ void main()
 
   // OUTPUT
  
-  vec3 col = mix(color1, color2, mixFactor);
+  vec3 col = mix(white, black, mixFactor);
   gl_FragColor = vec4(col,1.0);
 }
 `
