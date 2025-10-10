@@ -1,6 +1,6 @@
 import GlslCanvas from 'glslCanvas'
 
-import disp_frag from './texture_shader'
+import text_frag from './texture_shader'
 
 //prettier-ignore
 function textureHandler(canvas) {
@@ -31,7 +31,7 @@ function textureHandler(canvas) {
   // CONNECT SHADERS TO CANVAS
   const sandbox = new GlslCanvas(canvas)
 
-  const fragment_shader = disp_frag
+  const fragment_shader = text_frag
   sandbox.load(fragment_shader)
   sandbox.setUniform('u_resolution', [canvas.width, canvas.height])
   //prettier-ignore
