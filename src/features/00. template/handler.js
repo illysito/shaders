@@ -1,6 +1,6 @@
 import GlslCanvas from 'glslCanvas'
 
-import filter_frag from './filter_frag'
+import filter_frag from './shader'
 
 //prettier-ignore
 function filter(redRef, greenRef, blueRef, noiseRef, redShiftRef, greenShiftRef, blueShiftRef) {
