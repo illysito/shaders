@@ -24,6 +24,13 @@ vec2 aspect(vec2 uv, float image_ratio, float canvas_ratio){
   return uv;
 }
 
+float random(vec2 uv) {
+  return fract(sin(dot(uv.xy,
+      vec2(12.9898,78.233))) *
+          43758.5453123);
+}
+
+
 void main()
 {
 
@@ -38,9 +45,13 @@ void main()
 
   vec2 coords = aspect(uv, image_ratio, canvas_ratio);
 
+  float noise = random(uv * sin(u_time));
+  float noiseFactor = 0.32;
+
   // IMG
 
   vec4 img = texture2D(image, coords);
+  img += noise * noiseFactor;
 
   gl_FragColor = img;
 }

@@ -6,6 +6,8 @@ precision highp float;
 uniform float u_time;
 uniform vec2 u_resolution;
 uniform float u_offset;
+uniform float u_mouseX;
+uniform float u_mouseY;
 uniform sampler2D u_image_1;
 uniform sampler2D u_image_2;
 uniform sampler2D u_displacement;
@@ -54,24 +56,28 @@ void main()
 
   // IMG
 
-  float displacementCoef = 0.4;
+  float displacementCoef = 0.2;
 
   vec4 img_1 = texture2D(u_image_1, coords);
-  vec4 img_2 = texture2D(u_image_2, coords);
   vec4 displacement = texture2D(u_displacement, coords);
 
-  float displaceForce1 = displacement.r * u_offset * displacementCoef;
-  vec2 uvDisplaced1 = vec2(uv.x + sin(u_time) * displaceForce1, uv.y + displaceForce1);
+  // MOUSE
 
-  float displaceForce2 = displacement.r * (1.0 - u_offset) * displacementCoef;
-  vec2 uvDisplaced2 = vec2(uv.x - cos(u_time) * displaceForce2, uv.y - displaceForce2);
+  vec2 mouse = aspect(vec2(u_mouseX, 1.0 - u_mouseY), image_ratio, canvas_ratio);
 
+  // DISTANCE
+
+  float dist = distance(coords, mouse);
+  float radius = 0.1;
+  float softness = 0.1;
+  float strength = 1.0 - smoothstep(radius, radius + softness, dist);
+
+  float displaceForce1 = displacement.r * strength * displacementCoef;
+  vec2 uvDisplaced1 = vec2(coords.x + displaceForce1, coords.y + displaceForce1);
   vec4 d_img_1 = texture2D(u_image_1, uvDisplaced1);
-  vec4 d_img_2 = texture2D(u_image_2, uvDisplaced2);
 
-  vec4 img = (d_img_1 * (1.0 - u_offset) + d_img_2 * u_offset);
-  // img = (d_img_1 + d_img_2);
-  // img = d_img_1;
+  vec4 img = d_img_1;
+
   img += noise * noiseFactor;
 
   gl_FragColor = img;
