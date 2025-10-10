@@ -1,7 +1,7 @@
 import handleFilter from './features/scripts/handle_filter'
 import handleStripes from './features/scripts/handle_stripes'
 import nav from './features/scripts/w_nav'
-// import stripes from './features/shaders/stripes'
+import stripes from './features/shaders/stripes'
 // import variableType from './features/scripts/variable_type'
 import world from './features/threeJS/world/world_module'
 
@@ -14,7 +14,7 @@ const container = document.querySelector('#padmi_canvas')
 
 function runStripeShaders() {
   handleStripes()
-  // stripes()
+  stripes()
 }
 
 function runFilterShaders() {
