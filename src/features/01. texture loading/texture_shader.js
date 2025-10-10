@@ -1,4 +1,4 @@
-const disp_frag = `
+const texture_frag = `
 #ifdef GL_ES
 precision highp float;
 #endif
@@ -8,12 +8,6 @@ uniform vec2 u_resolution;
 uniform sampler2D image;
 
 varying vec2 v_texcoord;
-
-float random(vec2 uv) {
-  return fract(sin(dot(uv.xy,
-      vec2(12.9898,78.233))) *
-          43758.5453123);
-}
 
 vec2 aspect(vec2 uv, float image_ratio, float canvas_ratio){
   // if canvas is taller than image, stretch downwards
@@ -39,7 +33,7 @@ void main()
   //uv.x *= u_resolution.x / u_resolution.y;
 
   // find out the ratios
-  float image_ratio = 1920.0 / 1080.0;
+  float image_ratio = 1080.0 / 1920.0;
   float canvas_ratio = u_resolution.x / u_resolution.y;
 
   vec2 coords = aspect(uv, image_ratio, canvas_ratio);
@@ -48,11 +42,7 @@ void main()
 
   vec4 img = texture2D(image, coords);
 
-  float noiseMixer = random(uv);
-  img += noiseMixer;
-
   gl_FragColor = img;
-  // gl_FragColor = vec4(img.rgb * img.a, img.a);
 }
 `
-export default disp_frag
+export default texture_frag
