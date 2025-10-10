@@ -1,9 +1,9 @@
-import dispHandler from './texture_handler'
+import dispHandler from './disp_handler'
 
 function dispUI(canvas) {
   //prettier-ignore
   // const updateUniforms = displacementHandler(canvas)
-  textureHandler(canvas)
+  dispHandler(canvas)
 }
 
 export default dispUI

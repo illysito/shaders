@@ -35,8 +35,13 @@ function dispHandler(canvas) {
   sandbox.load(fragment_shader)
   sandbox.setUniform('u_resolution', [canvas.width, canvas.height])
   //prettier-ignore
-  const imageURL = 'https://raw.githubusercontent.com/illysito/shaders/4aff47b07ebcec8bad85a3e6597f5c59b00b3872/imgs/Adobe.jpg'
-  sandbox.setUniform('u_image', imageURL)
+  const image1_URL = 'https://raw.githubusercontent.com/illysito/shaders/2605776610e744beacacb039330bc22b17240e59/imgs/20240802_15533643_4278.jpg'
+  const image2_URL = 'https://raw.githubusercontent.com/illysito/shaders/2605776610e744beacacb039330bc22b17240e59/imgs/20240802_15580031_4289.jpg'
+  const displacementURL = 'https://raw.githubusercontent.com/illysito/shaders/2605776610e744beacacb039330bc22b17240e59/imgs/DisplacementMap_Marble.png'
+
+  sandbox.setUniform('u_image_1', image1_URL)
+  sandbox.setUniform('u_image_2', image2_URL)
+  sandbox.setUniform('u_displacement', displacementURL)
 
   function updateUniforms() {
     sandbox.setUniform('u_resolution', [canvas.width, canvas.height])
