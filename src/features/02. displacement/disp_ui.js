@@ -8,7 +8,7 @@ function dispUI(canvas) {
 
   const offsetRef = { current: 0 }
   const p2o = 'power2.out'
-  const duration = 0.8
+  const duration = 0.6
 
   const updateUniforms = dispHandler(canvas, offsetRef)
 

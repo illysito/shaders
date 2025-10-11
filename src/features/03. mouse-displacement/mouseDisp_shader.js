@@ -41,7 +41,7 @@ void main()
   // CREO EL VECTOR UV Y LO AJUSTO A RESOLLUCION
 
   vec2 uv = v_texcoord;
-  //uv.x *= u_resolution.x / u_resolution.y;
+  // uv.y *= u_resolution.y / u_resolution.y;
 
   // find out the ratios
   float image_ratio = 1652.0 / 992.0;
@@ -52,7 +52,7 @@ void main()
   // NOISE
 
   float noise = random(uv + sin(u_time));
-  float noiseFactor = 0.1;
+  float noiseFactor = 0.14;
 
   // IMG
 
@@ -63,13 +63,14 @@ void main()
 
   // MOUSE
 
-  vec2 mouse = aspect(vec2(u_mouseX, 1.0 - u_mouseY), image_ratio, canvas_ratio);
+  // vec2 mouse = aspect(vec2(u_mouseX, 1.0 - u_mouseY), image_ratio, canvas_ratio);
+  vec2 mouse = vec2(u_mouseX, 1.0 - u_mouseY);
 
   // DISTANCE
 
   float dist = distance(coords, mouse);
-  float radius = 0.1;
-  float softness = 0.1;
+  float radius = 0.1 * sin(u_time);
+  float softness = 0.2;
   float strength = 1.0 - smoothstep(radius, radius + softness, dist);
 
   float displaceForce1 = displacement.r * strength * displacementCoef;

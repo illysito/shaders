@@ -16,6 +16,6 @@
 
 #mouse-displacement-canvas {
   /* border: 1px solid blue; */
-  width: 33svw;
-  height: 20svw;
+  width: 100%;
+  height: 100%;
 }
