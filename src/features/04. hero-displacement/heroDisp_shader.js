@@ -49,7 +49,7 @@ void main()
 
   // BLOCK COORDS
 
-  float blocks_x = 28.0;
+  float blocks_x = 48.0;
   float blocks_y = blocks_x * u_resolution.y / u_resolution.x;
   float block_coords_x = floor(uv.x * blocks_x) / blocks_x;
   float block_coords_y = floor(uv.y * blocks_y) / blocks_y;
