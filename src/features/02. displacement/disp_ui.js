@@ -1,6 +1,6 @@
 import gsap from 'gsap'
 
-import dispHandler from './disp_handler'
+import dispHandler from './disp_handler_ogl'
 
 function dispUI(canvas) {
   //prettier-ignore
