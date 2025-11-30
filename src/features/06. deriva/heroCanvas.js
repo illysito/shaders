@@ -13,9 +13,9 @@ function canvas() {
       .replace('/blob/', '@')
   }
   // LUIS
-  // const img = githubToJsDelivr(
-  //   'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWeb2.jpg'
-  // )
+  const img2 = githubToJsDelivr(
+    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWeb2.jpg'
+  )
   const img = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/ee580bd337512e70712ddeefef08ab8ef721925c/static/derivaBass.jpg'
   )
@@ -23,11 +23,11 @@ function canvas() {
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebBG.jpg'
   )
   // LUIS
-  // const distortion = githubToJsDelivr(
-  //   'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebMask2.jpg'
-  // )
+  const distortion2 = githubToJsDelivr(
+    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebMask2.jpg'
+  )
   const distortion = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/ee580bd337512e70712ddeefef08ab8ef721925c/static/derivaBassMask.jpg'
+    'https://github.com/illysito/shaders/blob/7f80a8a468dc1d985331900ed0870e756f3c3ad1/static/derivaBassMask2.jpg'
   )
   const perlinNoise = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/PerlinNoise.jpg'
@@ -48,7 +48,9 @@ function canvas() {
   //
   const textureLoader = new THREE.TextureLoader()
   const imgTexture = textureLoader.load(img)
+  const imgTexture2 = textureLoader.load(img2)
   const distortionTexture = textureLoader.load(distortion)
+  const distortionTexture2 = textureLoader.load(distortion2)
   const perlinTexture = textureLoader.load(perlinNoise)
   const background = textureLoader.load(bg)
   // imgTexture.colorSpace = THREE.SRGBColorSpace;
@@ -98,14 +100,18 @@ function canvas() {
   //
   // const planeGeo = new THREE.PlaneGeometry(1, 1, 1, 1);
   let computedOffset = 0.0
+  let swt = 0.0
   const planeGeo = new THREE.PlaneGeometry(16, 9, 1, 1)
   const material = new THREE.ShaderMaterial({
     uniforms: {
       uTexture: { value: imgTexture },
+      uTexture2: { value: imgTexture2 },
       uDistortionMap: { value: distortionTexture },
+      uDistortionMap2: { value: distortionTexture2 },
       uPerlin: { value: perlinTexture },
       uBG: { value: background },
       uOffset: { value: computedOffset },
+      uSw: { value: swt },
       uTime: { value: 0.0 }, // optional if you want animation
     },
     vertexShader: `
@@ -119,11 +125,14 @@ function canvas() {
     fragmentShader: `
     varying vec2 vUv;
     uniform sampler2D uTexture;
+    uniform sampler2D uTexture2;
     uniform sampler2D uDistortionMap;
+    uniform sampler2D uDistortionMap2;
     uniform sampler2D uPerlin;
     uniform sampler2D uBG;
     uniform float uOffset;
     uniform float uTime;
+    uniform float uSw;
 
     // FBM
 
@@ -181,7 +190,9 @@ function canvas() {
       );
 
       vec4 distortionMap = texture2D(uDistortionMap, noiseUv);
-      float distMap = distortionMap.r;
+      vec4 distortionMap2 = texture2D(uDistortionMap2, noiseUv);
+      vec4 distortionMapFinal = mix(distortionMap, distortionMap2, uSw);
+      float distMap = distortionMapFinal.r;
 
       // AURA NOISE
 
@@ -198,13 +209,18 @@ function canvas() {
         0.8 * auraNoise + perlinMap.r * uOffset
       );
 
-      vec4 auraTex = texture2D(uTexture, auraNoiseUv);
+      vec4 auraTex1 = texture2D(uTexture, auraNoiseUv);
+      vec4 auraTex2 = texture2D(uTexture2, auraNoiseUv);
+      vec4 auraTex = mix(auraTex1, auraTex2, uSw);
+
       float glowIntensity = 1.6;
       vec3 glowColor = auraTex.rgb * auraNoise * glowIntensity;
       float pulse = 0.5 + 0.5 * sin(uTime * 1.2 + auraNoise * 4.0);
       glowColor *= pulse;
 
-      vec4 tex = texture2D(uTexture, noiseUv);
+      vec4 tex1 = texture2D(uTexture, noiseUv);
+      vec4 tex2 = texture2D(uTexture2, noiseUv);
+      vec4 tex = mix(tex1, tex2, uSw);
       vec3 color = tex.rgb;
 
       // // ADDITIVE BLEND
@@ -244,11 +260,34 @@ function canvas() {
 
   // ------------------------------- animate & render!
 
+  // window.addEventListener('scroll', () => {
+  //   const scroll = window.scrollY
+  //   computedOffset = gsap.utils.mapRange(0, 450, 0, 1, scroll)
+  //   if (computedOffset > 1) {
+  //     computedOffset = 1.0
+  //   }
+  // })
+
   window.addEventListener('scroll', () => {
     const scroll = window.scrollY
-    computedOffset = gsap.utils.mapRange(0, 450, 0, 1, scroll)
-    if (computedOffset > 1) {
-      computedOffset = 1.0
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+
+    // Fade in from 0 → 1 for the first 450px
+    let fadeIn = gsap.utils.mapRange(0, 450, 0, 1, scroll)
+    fadeIn = Math.min(fadeIn, 1)
+
+    // Fade out from 1 → 0 as user approaches the bottom
+    let fadeOut = gsap.utils.mapRange(maxScroll - 450, maxScroll, 1, 0, scroll)
+    fadeOut = Math.max(Math.min(fadeOut, 1), 0)
+
+    // Choose which applies
+    computedOffset = scroll < 450 ? fadeIn : fadeOut
+
+    // Swap textures
+    if (scroll > 450) {
+      swt = 1.0
+    } else {
+      swt = 0.0
     }
   })
 
@@ -260,6 +299,7 @@ function canvas() {
     // UNIFORMS
     material.uniforms.uTime.value = t
     material.uniforms.uOffset.value = computedOffset
+    material.uniforms.uSw.value = swt
 
     // Render
     requestAnimationFrame(tick)
