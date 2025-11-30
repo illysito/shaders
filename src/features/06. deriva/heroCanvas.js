@@ -12,20 +12,22 @@ function canvas() {
       .replace('github.com', 'cdn.jsdelivr.net/gh')
       .replace('/blob/', '@')
   }
+  // LUIS
   // const img = githubToJsDelivr(
   //   'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWeb2.jpg'
   // )
   const img = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/98402a76413a59d51acb859291e9946b3c5d8bcd/static/derivaWebLucasGrain.jpg'
+    'https://github.com/illysito/shaders/blob/ee580bd337512e70712ddeefef08ab8ef721925c/static/derivaBass.jpg'
   )
   const bg = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebBG.jpg'
   )
+  // LUIS
   // const distortion = githubToJsDelivr(
   //   'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebMask2.jpg'
   // )
   const distortion = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/98402a76413a59d51acb859291e9946b3c5d8bcd/static/derivaWebMaskLucas.jpg'
+    'https://github.com/illysito/shaders/blob/ee580bd337512e70712ddeefef08ab8ef721925c/static/derivaBassMask.jpg'
   )
   const perlinNoise = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/PerlinNoise.jpg'
