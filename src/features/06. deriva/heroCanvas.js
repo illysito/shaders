@@ -25,7 +25,7 @@ function canvas() {
   //   'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebMask2.jpg'
   // )
   const distortion = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/08855322458974ddef2dc24967e30cf6b019b6ad/static/derivaWebMaskLucas.jpg'
+    'https://github.com/illysito/shaders/blob/c70e533249a8b04b0895f0ed5b4844146b0dd52b/static/derivaWebLucas.jpg'
   )
   const perlinNoise = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/PerlinNoise.jpg'
