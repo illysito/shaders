@@ -242,7 +242,6 @@ function canvas() {
     if (computedOffset > 1) {
       computedOffset = 1.0
     }
-    console.log(computedOffset)
   })
 
   const clock = new THREE.Clock()

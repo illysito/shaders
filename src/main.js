@@ -6,6 +6,7 @@ import golUI from './features/05. game of life/gol_ui'
 //-----------//
 import heroCanvas from './features/06. deriva/heroCanvas'
 import heroType from './features/06. deriva/heroType'
+import program from './features/06. deriva/programType'
 
 import './styles/style.css'
 
@@ -30,6 +31,7 @@ function runShaderFunctions() {
 function runDerivaFunctions() {
   heroCanvas()
   heroType()
+  program()
 }
 
 if (document.body.classList.contains('shaders__body')) runShaderFunctions()

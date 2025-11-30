@@ -4,15 +4,27 @@ function heroType() {
   const deriva = document.querySelector('.h1')
   const jazz = document.querySelector('.is--kini')
   const navItems = document.querySelectorAll('.nav-item')
-  console.log(deriva, jazz)
+  const socialLinks = document.querySelectorAll('.is--small')
+  const marquee = document.querySelector('.hero-marquee')
 
+  // variable on mousemove
   window.addEventListener('mousemove', (e) => {
     const x = e.clientX
 
-    let mappedWeight1 = gsap.utils.mapRange(0, window.innerWidth, 100, 700, x)
-    let mappedWeight2 = gsap.utils.mapRange(0, window.innerWidth, 360, 4, x)
-
-    console.log(mappedWeight1)
+    let mappedWeight1 = gsap.utils.mapRange(
+      0.1 * window.innerWidth,
+      window.innerWidth,
+      100,
+      700,
+      x
+    )
+    let mappedWeight2 = gsap.utils.mapRange(
+      0,
+      window.innerWidth * 0.9,
+      360,
+      4,
+      x
+    )
 
     gsap.set(deriva, {
       fontVariationSettings: `'wght' ${mappedWeight1}`,
@@ -23,6 +35,7 @@ function heroType() {
     })
   })
 
+  // variable on hover
   navItems.forEach((item) => {
     item.addEventListener('mouseover', () => {
       gsap.to(item, {
@@ -34,9 +47,44 @@ function heroType() {
     item.addEventListener('mouseleave', () => {
       gsap.to(item, {
         // color: '#202020',
-        fontVariationSettings: `'wght' ${250}`,
+        fontVariationSettings: `'wght' ${200}`,
         duration: 0.4,
       })
+    })
+  })
+  socialLinks.forEach((item) => {
+    item.addEventListener('mouseover', () => {
+      gsap.to(item, {
+        // color: '#2020dd',
+        fontVariationSettings: `'wght' ${450}`,
+        duration: 0.4,
+      })
+    })
+    item.addEventListener('mouseleave', () => {
+      gsap.to(item, {
+        // color: '#202020',
+        fontVariationSettings: `'wght' ${200}`,
+        duration: 0.4,
+      })
+    })
+  })
+
+  // marquee
+  const tween = gsap.to(marquee, {
+    xPercent: -50,
+    duration: 24,
+    repeat: -1,
+    ease: 'none',
+  })
+  marquee.addEventListener('mouseover', () => {
+    // tween.timeScale(1.6)
+    gsap.to(tween, {
+      timeScale: 2,
+    })
+  })
+  marquee.addEventListener('mouseleave', () => {
+    gsap.to(tween, {
+      timeScale: 1,
     })
   })
 }
