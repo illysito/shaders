@@ -1,14 +1,29 @@
 import gsap from 'gsap'
 import * as THREE from 'three'
 
-import img from '../../static/derivaWeb2.jpg'
-import bg from '../../static/derivaWebBG.jpg'
-import distortion from '../../static/derivaWebMask2.jpg'
-import perlinNoise from '../../static/PerlinNoise.jpg'
-
 function canvas() {
   // ------------------------------- setup
 
+  //
+  // Textures
+  //
+  function githubToJsDelivr(permalink) {
+    return permalink
+      .replace('github.com', 'cdn.jsdelivr.net/gh')
+      .replace('/blob/', '@')
+  }
+  const img = githubToJsDelivr(
+    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWeb2.jpg'
+  )
+  const bg = githubToJsDelivr(
+    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebBG.jpg'
+  )
+  const distortion = githubToJsDelivr(
+    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebMask2.jpg'
+  )
+  const perlinNoise = githubToJsDelivr(
+    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/PerlinNoise.jpg'
+  )
   //
   // Canvas
   //
@@ -191,10 +206,11 @@ function canvas() {
       vec3 finalColor = 1.0 - (1.0 - color) * (1.0 - vec3(0.2 * glowColor.r, 0.8 * glowColor.g, 0.2 * glowColor.b));
 
       // FINAL BLEND
-      vec3 finalComp = mix(finalColor, background.rgb, uOffset);
+      float alphaOffset = smoothstep(0.8, 1.0, uOffset);
+      vec3 finalComp = mix(finalColor, background.rgb, alphaOffset);
 
       gl_FragColor = vec4(finalComp, 1.0);
-      // gl_FragColor = vec4(glowColor, 1.0);
+      // gl_FragColor = vec4(finalColor, 1.0);
     }
   `,
   })

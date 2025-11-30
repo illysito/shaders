@@ -5,6 +5,7 @@ import heroDispUI from './features/04. hero-displacement/heroDisp_ui'
 import golUI from './features/05. game of life/gol_ui'
 //-----------//
 import heroCanvas from './features/06. deriva/heroCanvas'
+import heroType from './features/06. deriva/heroType'
 
 import './styles/style.css'
 
@@ -28,6 +29,7 @@ function runShaderFunctions() {
 
 function runDerivaFunctions() {
   heroCanvas()
+  heroType()
 }
 
 if (document.body.classList.contains('shaders__body')) runShaderFunctions()
