@@ -238,7 +238,7 @@ function canvas() {
 
   window.addEventListener('scroll', () => {
     const scroll = window.scrollY
-    computedOffset = gsap.utils.mapRange(0, 600, 0, 1, scroll)
+    computedOffset = gsap.utils.mapRange(0, 450, 0, 1, scroll)
     if (computedOffset > 1) {
       computedOffset = 1.0
     }
