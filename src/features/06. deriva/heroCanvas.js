@@ -12,14 +12,20 @@ function canvas() {
       .replace('github.com', 'cdn.jsdelivr.net/gh')
       .replace('/blob/', '@')
   }
+  // const img = githubToJsDelivr(
+  //   'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWeb2.jpg'
+  // )
   const img = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWeb2.jpg'
+    'https://github.com/illysito/shaders/blob/08855322458974ddef2dc24967e30cf6b019b6ad/static/derivaWebLucas.jpg'
   )
   const bg = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebBG.jpg'
   )
+  // const distortion = githubToJsDelivr(
+  //   'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebMask2.jpg'
+  // )
   const distortion = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebMask2.jpg'
+    'https://github.com/illysito/shaders/blob/08855322458974ddef2dc24967e30cf6b019b6ad/static/derivaWebMaskLucas.jpg'
   )
   const perlinNoise = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/PerlinNoise.jpg'
@@ -203,7 +209,7 @@ function canvas() {
       // vec3 finalColor = color + glowColor;
 
       // SCREEN BLEND
-      vec3 finalColor = 1.0 - (1.0 - color) * (1.0 - vec3(0.2 * glowColor.r, 0.8 * glowColor.g, 0.2 * glowColor.b));
+      vec3 finalColor = 1.0 - (1.0 - color) * (1.0 - vec3(0.4 * glowColor.r, 0.8 * glowColor.g, 0.2 * glowColor.b));
 
       // FINAL BLEND
       float alphaOffset = smoothstep(0.8, 1.0, uOffset);

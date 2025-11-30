@@ -5,47 +5,92 @@ gsap.registerPlugin(ScrollTrigger)
 
 function program() {
   const stripes = document.querySelectorAll('.event-stripe-2')
+  const dates = document.querySelectorAll('.date-h')
   const stars = document.querySelectorAll('.star-img')
 
   stripes.forEach((stripe) => {
-    // const tl = gsap.timeline({
-    //   scrollTrigger: {
-    //     trigger: stripe,
-    //     start: 'top 100%', // just below viewport
-    //     end: 'top 0%', // top reaches top of viewport
-    //     scrub: true,
-    //   },
-    // })
-
-    // tl.fromTo(stripe, { opacity: 0 }, { opacity: 1 })
-    gsap.fromTo(
-      stripe,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        scrollTrigger: {
-          trigger: stripe,
-          start: 'top 90%',
-          end: 'top 50%',
-          scrub: true,
-        },
-      }
-    )
-
-    // Fade OUT (leaving above)
-    gsap.fromTo(
-      stripe,
-      { opacity: 1 },
-      {
-        opacity: 0,
-        scrollTrigger: {
-          trigger: stripe,
-          start: 'top 30%',
-          end: 'top 0%',
-          scrub: true,
-        },
-      }
-    )
+    gsap.to(stripe, {
+      opacity: 1,
+      scrollTrigger: {
+        trigger: stripe,
+        start: 'top 90%',
+        end: 'top 60%',
+        scrub: true,
+        // markers: true,
+      },
+      onComplete: () => {
+        // Fade OUT (leaving above)
+        gsap.fromTo(
+          stripe,
+          { opacity: 1 },
+          {
+            opacity: 0,
+            scrollTrigger: {
+              trigger: stripe,
+              start: 'top 8%',
+              end: 'top -8%',
+              scrub: true,
+            },
+          }
+        )
+      },
+    })
+  })
+  dates.forEach((date) => {
+    gsap.to(date, {
+      opacity: 1,
+      scrollTrigger: {
+        trigger: date,
+        start: 'top 90%&',
+        end: 'top 60%',
+        scrub: true,
+        // markers: true,
+      },
+      onComplete: () => {
+        // Fade OUT (leaving above)
+        gsap.fromTo(
+          date,
+          { opacity: 1 },
+          {
+            opacity: 0,
+            scrollTrigger: {
+              trigger: date,
+              start: 'top 8%',
+              end: 'top-8%',
+              scrub: true,
+            },
+          }
+        )
+      },
+    })
+  })
+  stars.forEach((star) => {
+    gsap.to(star, {
+      opacity: 1,
+      scrollTrigger: {
+        trigger: star,
+        start: 'top 90%',
+        end: 'top 60%',
+        scrub: true,
+        // markers: true,
+      },
+      onComplete: () => {
+        // Fade OUT (leaving above)
+        gsap.fromTo(
+          star,
+          { opacity: 1 },
+          {
+            opacity: 0,
+            scrollTrigger: {
+              trigger: star,
+              start: 'top 8%',
+              end: 'top -8%',
+              scrub: true,
+            },
+          }
+        )
+      },
+    })
   })
 
   gsap.to(stars, {
