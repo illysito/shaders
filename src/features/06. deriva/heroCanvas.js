@@ -59,10 +59,10 @@ function canvas() {
   let mapBass
   if (isMobile()) {
     imgBass = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/BassMobile.webp'
+      'https://github.com/illysito/shaders/blob/775f82bada78482986f10c1ec436a51f6624ec70/static/DerivaBass2.jpg'
     )
     mapBass = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/BassMaskMobile.webp'
+      'https://github.com/illysito/shaders/blob/775f82bada78482986f10c1ec436a51f6624ec70/static/DerivaBassMask2.jpg'
     )
   } else {
     imgBass = githubToJsDelivr(
