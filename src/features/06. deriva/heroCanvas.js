@@ -36,10 +36,10 @@ function canvas() {
     )
   } else {
     imgLuis = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/LuisGrain.webp'
+      'https://github.com/illysito/shaders/blob/e71d22a52a94c5d1deecacd1d453fbb080e9a70c/static/LuisGrainDktp.webp'
     )
     mapLuis = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/LuisMask.webp'
+      'https://github.com/illysito/shaders/blob/e71d22a52a94c5d1deecacd1d453fbb080e9a70c/static/LuisMaskDktp.webp'
     )
   }
 
@@ -131,7 +131,13 @@ function canvas() {
   // const planeGeo = new THREE.PlaneGeometry(1, 1, 1, 1);
   let computedOffset = 0.0
   let swt = 0.0
-  const planeGeo = new THREE.PlaneGeometry(16, 9, 1, 1)
+  let planeGeo
+  if (isMobile()) {
+    planeGeo = new THREE.PlaneGeometry(3, 4, 1, 1)
+  } else {
+    planeGeo = new THREE.PlaneGeometry(16, 9, 1, 1)
+  }
+
   const material = new THREE.ShaderMaterial({
     uniforms: {
       uTexture: { value: imgTexture },
@@ -283,7 +289,11 @@ function canvas() {
   // });
 
   const plane = new THREE.Mesh(planeGeo, material)
-  const planeScale = 0.4
+  let planeScale = 0.4
+  if (isMobile()) {
+    planeScale = 1
+  }
+
   plane.scale.set(planeScale, planeScale, planeScale)
   scene.add(plane)
 
