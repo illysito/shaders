@@ -30,7 +30,10 @@ function runShaderFunctions() {
 }
 
 function runDerivaFunctions() {
-  heroCanvas()
+  const canvas = document.querySelector('#webgl')
+  if (canvas) {
+    heroCanvas()
+  }
   heroType()
   // countdown()
   program()
