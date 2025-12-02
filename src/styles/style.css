@@ -47,11 +47,21 @@
   z-index: -1;
 }
 
-#webgl {
-  /* border: 1px solid black; */
-  width: 100vw;
-  height: 100vh;
-  /* height: auto;
-  aspect-ratio: 16/9;
-  outline: none; */
+@media (min-width: 769px) {
+  #webgl {
+    width: 100vw;
+    height: 100vh;
+  }
 }
+
+@media (max-width: 768px) {
+  #webgl {
+    width: 100vw;
+    height: auto;
+  }
+}
+
+/* #webgl {
+width: 100vw;
+height: 100vh;
+} */

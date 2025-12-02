@@ -66,6 +66,8 @@ function canvas() {
   // Canvas
   //
   const canvas = document.querySelector('#webgl')
+  const vh = window.visualViewport?.height || window.innerHeight
+  canvas.style.height = `${vh}px`
 
   //
   // Scene
