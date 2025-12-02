@@ -121,6 +121,14 @@ function heroType() {
       ease: 'none',
     })
   })
+
+  // position socials on mobile
+  const socialLinksMobile = document.querySelector('.is--socials')
+  const vh = window.visualViewport?.height || window.innerHeight
+  const height = socialLinksMobile.offsetHeight
+  const bottomMargin = 12
+  const topMargin = vh - height - bottomMargin
+  socialLinksMobile.style.marginTop = `${topMargin}px`
 }
 
 export default heroType
