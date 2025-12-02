@@ -1,11 +1,20 @@
 import gsap from 'gsap'
 
 function heroType() {
+  function isMobile() {
+    return window.innerWidth < 768
+  }
+
   const deriva = document.querySelector('.h1')
   const jazz = document.querySelector('.is--kini')
   const navItems = document.querySelectorAll('.nav-item')
   const socialLinks = document.querySelectorAll('.is--small')
-  const marquee = document.querySelector('.hero-marquee')
+  let marquee
+  if (isMobile()) {
+    marquee = document.querySelector('.hero-marquee-mobile')
+  } else {
+    marquee = document.querySelector('.hero-marquee')
+  }
 
   // variable on mousemove
   window.addEventListener('mousemove', (e) => {
