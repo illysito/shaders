@@ -20,7 +20,7 @@ function heroType() {
   // variable on mousemove or not (on mobile)
   let counter = 0
   function variableType() {
-    counter += 0.01
+    counter += 0.008
 
     const sine = Math.sin(counter)
 
@@ -154,13 +154,13 @@ function heroType() {
   }
 
   // position socials on mobile
-  const socialLinksMobile = document.querySelector('.is--socials')
-  const vh = window.visualViewport?.height || window.innerHeight
-  const height = socialLinksMobile.offsetHeight
-  const bottomMargin = 12
-  const topMargin = vh - height - bottomMargin
-  console.log(topMargin)
-  socialLinksMobile.style.top = `${topMargin}px`
+  // const socialLinksMobile = document.querySelector('.is--socials')
+  // const vh = window.visualViewport?.height || window.innerHeight
+  // const height = socialLinksMobile.offsetHeight
+  // const bottomMargin = 12
+  // const topMargin = vh - height - bottomMargin
+  // console.log(topMargin)
+  // socialLinksMobile.style.top = `${topMargin}px`
 
   // STAR ROTATION
   gsap.to(star, {

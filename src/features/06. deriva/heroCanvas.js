@@ -143,6 +143,12 @@ function canvas() {
   //
   // const planeGeo = new THREE.PlaneGeometry(1, 1, 1, 1);
   let computedOffset = 0.0
+  let scrollLimit = 0
+  if (isMobile()) {
+    scrollLimit = 900
+  } else {
+    scrollLimit = 450
+  }
   let swt = 0.0
   let planeGeo
   if (isMobile()) {
@@ -336,11 +342,17 @@ function canvas() {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight
 
     // Fade in from 0 → 1 for the first 450px
-    let fadeIn = gsap.utils.mapRange(0, 450, 0, 1, scroll)
+    let fadeIn = gsap.utils.mapRange(0, scrollLimit, 0, 1, scroll)
     fadeIn = Math.min(fadeIn, 1)
 
     // Fade out from 1 → 0 as user approaches the bottom
-    let fadeOut = gsap.utils.mapRange(maxScroll - 450, maxScroll, 1, 0, scroll)
+    let fadeOut = gsap.utils.mapRange(
+      maxScroll - scrollLimit,
+      maxScroll,
+      1,
+      0,
+      scroll
+    )
     fadeOut = Math.max(Math.min(fadeOut, 1), 0)
 
     // Choose which applies
