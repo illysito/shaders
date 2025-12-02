@@ -305,6 +305,7 @@ function canvas() {
   let planeScale = 0.4
   if (isMobile()) {
     planeScale = 1
+    plane.position.y = 0.2
   }
 
   plane.scale.set(planeScale, planeScale, planeScale)
