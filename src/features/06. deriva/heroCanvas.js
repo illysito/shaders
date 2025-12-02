@@ -249,7 +249,7 @@ function canvas() {
 
       vec4 distortionMap = texture2D(uDistortionMap, noiseUv);
       vec4 distortionMap2 = texture2D(uDistortionMap2, noiseUv);
-      vec4 distortionMapFinal = mix(distortionMap2,distortionMap, uSw);
+      vec4 distortionMapFinal = mix(distortionMap, distortionMap2, uSw);
       float distMap = distortionMapFinal.r;
 
       // AURA NOISE
@@ -278,7 +278,7 @@ function canvas() {
 
       vec4 tex1 = texture2D(uTexture, noiseUv);
       vec4 tex2 = texture2D(uTexture2, noiseUv);
-      vec4 tex = mix(tex2, tex1, uSw);
+      vec4 tex = mix(tex1, tex2, uSw);
       vec3 color = tex.rgb;
 
       // // ADDITIVE BLEND
@@ -304,8 +304,8 @@ function canvas() {
   const plane = new THREE.Mesh(planeGeo, material)
   let planeScale = 0.4
   if (isMobile()) {
-    planeScale = 1
-    plane.position.y = 0.3
+    planeScale = 0.9
+    plane.position.y = 0.12
   }
 
   plane.scale.set(planeScale, planeScale, planeScale)
