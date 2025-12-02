@@ -2,6 +2,10 @@ import gsap from 'gsap'
 import * as THREE from 'three'
 
 function canvas() {
+  // function isMobile(){
+  //   return window.innerWidth < 768
+  // }
+
   // ------------------------------- setup
 
   //
@@ -13,21 +17,21 @@ function canvas() {
       .replace('/blob/', '@')
   }
   // LUIS
-  const img2 = githubToJsDelivr(
+  const imgLuis = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWeb2.jpg'
   )
-  const img = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/ee580bd337512e70712ddeefef08ab8ef721925c/static/derivaBass.jpg'
+  const imgBass = githubToJsDelivr(
+    'https://github.com/illysito/shaders/blob/a72ff98b763a73506e974baa9ff0de9b533d0906/static/derivaBass3.jpg'
   )
   const bg = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebBG.jpg'
   )
   // LUIS
-  const distortion2 = githubToJsDelivr(
+  const mapLuis = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebMask2.jpg'
   )
-  const distortion = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/7f80a8a468dc1d985331900ed0870e756f3c3ad1/static/derivaBassMask2.jpg'
+  const mapBass = githubToJsDelivr(
+    'https://github.com/illysito/shaders/blob/a72ff98b763a73506e974baa9ff0de9b533d0906/static/derivaBassMask3.jpg'
   )
   const perlinNoise = githubToJsDelivr(
     'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/PerlinNoise.jpg'
@@ -47,10 +51,10 @@ function canvas() {
   // Textures
   //
   const textureLoader = new THREE.TextureLoader()
-  const imgTexture = textureLoader.load(img)
-  const imgTexture2 = textureLoader.load(img2)
-  const distortionTexture = textureLoader.load(distortion)
-  const distortionTexture2 = textureLoader.load(distortion2)
+  const imgTexture = textureLoader.load(imgBass)
+  const imgTexture2 = textureLoader.load(imgLuis)
+  const distortionTexture = textureLoader.load(mapBass)
+  const distortionTexture2 = textureLoader.load(mapLuis)
   const perlinTexture = textureLoader.load(perlinNoise)
   const background = textureLoader.load(bg)
   // imgTexture.colorSpace = THREE.SRGBColorSpace;
@@ -172,9 +176,17 @@ function canvas() {
 
       vec2 uv = vUv;
 
+      // BLOCK UVS
+
+      // float blocks = 400.0;
+      // float blockUvX = floor(uv.x * blocks) / blocks;
+      // float blockUvY = floor(uv.y * blocks) / blocks;
+      // vec2 blocksUv = vec2(blockUvX, blockUvY);
+
       // TEXTURES
 
       vec4 perlinMap = texture2D(uPerlin, uv);
+      // vec4 perlinMap = texture2D(uPerlin, blocksUv);
       vec4 background = texture2D(uBG, uv);
 
       // TEXTURE NOISE
@@ -183,11 +195,12 @@ function canvas() {
       // noise *= 2.0 * distMap;
 
       vec2 noiseUv = vec2(
-        uv.x + 0.002 * sin(0.4 * uTime * noise  + uTime),
+        uv.x + 0.002 * sin(0.4 * uTime * noise  + uTime) + 0.2 * sin(uTime) * perlinMap.r * uOffset,
         // uv.x,
-        uv.y + 0.004 * cos(0.2 * uTime * noise) + 2.0 * perlinMap.r * uOffset
+        uv.y + 0.004 * cos(0.2 * uTime * noise) + 2.0 * perlinMap.r * uOffset 
         // uv.y + perlinMap.r * uOffset
       );
+      
 
       vec4 distortionMap = texture2D(uDistortionMap, noiseUv);
       vec4 distortionMap2 = texture2D(uDistortionMap2, noiseUv);

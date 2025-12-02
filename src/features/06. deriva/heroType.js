@@ -70,9 +70,10 @@ function heroType() {
   })
 
   // marquee
+  const whiteMarquee = marquee.querySelectorAll('.is--white')
   const tween = gsap.to(marquee, {
     xPercent: -50,
-    duration: 24,
+    duration: 32,
     repeat: -1,
     ease: 'none',
   })
@@ -81,10 +82,34 @@ function heroType() {
     gsap.to(tween, {
       timeScale: 2,
     })
+    if (whiteMarquee) {
+      gsap.to(whiteMarquee, {
+        opacity: 1,
+        duration: 0.2,
+        ease: 'none',
+      })
+    }
+    gsap.to(marquee, {
+      backgroundColor: '#202020',
+      duration: 0.2,
+      ease: 'none',
+    })
   })
   marquee.addEventListener('mouseleave', () => {
     gsap.to(tween, {
       timeScale: 1,
+    })
+    if (whiteMarquee) {
+      gsap.to(whiteMarquee, {
+        opacity: 0,
+        duration: 0.2,
+        ease: 'none',
+      })
+    }
+    gsap.to(marquee, {
+      backgroundColor: '#fffbf600',
+      duration: 0.2,
+      ease: 'none',
     })
   })
 }

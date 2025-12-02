@@ -4,6 +4,7 @@ import mouseDispUI from './features/03. mouse-displacement/mouseDisp_ui'
 import heroDispUI from './features/04. hero-displacement/heroDisp_ui'
 import golUI from './features/05. game of life/gol_ui'
 //-----------//
+// import countdown from './features/06. deriva/countdown'
 import heroCanvas from './features/06. deriva/heroCanvas'
 import heroType from './features/06. deriva/heroType'
 import program from './features/06. deriva/programType'
@@ -31,6 +32,7 @@ function runShaderFunctions() {
 function runDerivaFunctions() {
   heroCanvas()
   heroType()
+  // countdown()
   program()
 }
 
