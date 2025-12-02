@@ -9,6 +9,7 @@ function heroType() {
   const jazz = document.querySelector('.is--kini')
   const navItems = document.querySelectorAll('.nav-item')
   const socialLinks = document.querySelectorAll('.is--small')
+  const star = document.querySelector('.star-little')
   let marquee
   if (isMobile()) {
     marquee = document.querySelector('.hero-marquee-mobile')
@@ -16,24 +17,16 @@ function heroType() {
     marquee = document.querySelector('.hero-marquee')
   }
 
-  // variable on mousemove
-  window.addEventListener('mousemove', (e) => {
-    const x = e.clientX
+  // variable on mousemove or not (on mobile)
+  let counter = 0
+  function variableType() {
+    counter += 0.01
 
-    let mappedWeight1 = gsap.utils.mapRange(
-      0.1 * window.innerWidth,
-      window.innerWidth,
-      100,
-      700,
-      x
-    )
-    let mappedWeight2 = gsap.utils.mapRange(
-      0,
-      window.innerWidth * 0.9,
-      360,
-      4,
-      x
-    )
+    const sine = Math.sin(counter)
+    const cosine = Math.cos(counter)
+
+    const mappedWeight1 = gsap.utils.mapRange(-1, 1, 100, 700, sine)
+    const mappedWeight2 = gsap.utils.mapRange(-1, 1, 4, 380, cosine)
 
     gsap.set(deriva, {
       fontVariationSettings: `'wght' ${mappedWeight1}`,
@@ -42,7 +35,40 @@ function heroType() {
     gsap.set(jazz, {
       fontVariationSettings: `'wght' ${mappedWeight2}`,
     })
-  })
+
+    requestAnimationFrame(variableType)
+  }
+
+  if (!isMobile()) {
+    window.addEventListener('mousemove', (e) => {
+      const x = e.clientX
+
+      let mappedWeight1 = gsap.utils.mapRange(
+        0.1 * window.innerWidth,
+        window.innerWidth,
+        100,
+        700,
+        x
+      )
+      let mappedWeight2 = gsap.utils.mapRange(
+        0,
+        window.innerWidth * 0.9,
+        360,
+        4,
+        x
+      )
+
+      gsap.set(deriva, {
+        fontVariationSettings: `'wght' ${mappedWeight1}`,
+      })
+
+      gsap.set(jazz, {
+        fontVariationSettings: `'wght' ${mappedWeight2}`,
+      })
+    })
+  } else {
+    variableType()
+  }
 
   // variable on hover
   navItems.forEach((item) => {
@@ -70,9 +96,13 @@ function heroType() {
       })
     })
     item.addEventListener('mouseleave', () => {
+      let w = 200
+      if (isMobile()) {
+        w = 300
+      }
       gsap.to(item, {
         // color: '#202020',
-        fontVariationSettings: `'wght' ${200}`,
+        fontVariationSettings: `'wght' ${w}`,
         duration: 0.4,
       })
     })
@@ -86,41 +116,43 @@ function heroType() {
     repeat: -1,
     ease: 'none',
   })
-  marquee.addEventListener('mouseover', () => {
-    // tween.timeScale(1.6)
-    gsap.to(tween, {
-      timeScale: 2,
-    })
-    if (whiteMarquee) {
-      gsap.to(whiteMarquee, {
-        opacity: 1,
+  if (!isMobile()) {
+    marquee.addEventListener('mouseover', () => {
+      // tween.timeScale(1.6)
+      gsap.to(tween, {
+        timeScale: 2,
+      })
+      if (whiteMarquee) {
+        gsap.to(whiteMarquee, {
+          opacity: 1,
+          duration: 0.2,
+          ease: 'none',
+        })
+      }
+      gsap.to(marquee, {
+        backgroundColor: '#202020',
         duration: 0.2,
         ease: 'none',
       })
-    }
-    gsap.to(marquee, {
-      backgroundColor: '#202020',
-      duration: 0.2,
-      ease: 'none',
     })
-  })
-  marquee.addEventListener('mouseleave', () => {
-    gsap.to(tween, {
-      timeScale: 1,
-    })
-    if (whiteMarquee) {
-      gsap.to(whiteMarquee, {
-        opacity: 0,
+    marquee.addEventListener('mouseleave', () => {
+      gsap.to(tween, {
+        timeScale: 1,
+      })
+      if (whiteMarquee) {
+        gsap.to(whiteMarquee, {
+          opacity: 0,
+          duration: 0.2,
+          ease: 'none',
+        })
+      }
+      gsap.to(marquee, {
+        backgroundColor: '#fffbf600',
         duration: 0.2,
         ease: 'none',
       })
-    }
-    gsap.to(marquee, {
-      backgroundColor: '#fffbf600',
-      duration: 0.2,
-      ease: 'none',
     })
-  })
+  }
 
   // position socials on mobile
   const socialLinksMobile = document.querySelector('.is--socials')
@@ -128,7 +160,16 @@ function heroType() {
   const height = socialLinksMobile.offsetHeight
   const bottomMargin = 12
   const topMargin = vh - height - bottomMargin
-  socialLinksMobile.style.marginTop = `${topMargin}px`
+  console.log(topMargin)
+  socialLinksMobile.style.top = `${topMargin}px`
+
+  // STAR ROTATION
+  gsap.to(star, {
+    rotation: 360,
+    duration: 12,
+    ease: 'none',
+    repeat: -1,
+  })
 }
 
 export default heroType
