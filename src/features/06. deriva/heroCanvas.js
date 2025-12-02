@@ -31,7 +31,7 @@ function canvas() {
       'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/derivaWebBG.webp'
     )
     perlinNoise = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/PerlinNoise.webp'
+      'https://github.com/illysito/shaders/blob/4ab06e2c80843e140e8bc212035ddfb1a813a8b3/static/PerlinFog-07.webp'
     )
   }
 
@@ -278,26 +278,30 @@ function canvas() {
       vec4 auraTex = mix(auraTex1, auraTex2, uSw);
 
       float glowIntensity = 1.6;
-      vec3 glowColor = auraTex.rgb * auraNoise * glowIntensity;
+      vec4 glowColor = vec4(auraTex.rgb * auraNoise * glowIntensity, distMap * uOffset);
       float pulse = 0.5 + 0.5 * sin(uTime * 1.2 + auraNoise * 4.0);
       glowColor *= pulse;
 
       vec4 tex1 = texture2D(uTexture, noiseUv);
       vec4 tex2 = texture2D(uTexture2, noiseUv);
       vec4 tex = mix(tex1, tex2, uSw);
-      vec3 color = tex.rgb;
+      // vec3 color = tex.rgb;
+      vec4 color = vec4(tex.rgb, 0.0 * uOffset);
 
       // // ADDITIVE BLEND
       // vec3 finalColor = color + glowColor;
 
       // SCREEN BLEND
-      vec3 finalColor = 1.0 - (1.0 - color) * (1.0 - vec3(0.2 * glowColor.r, 0.8 * glowColor.g, 0.2 * glowColor.b));
+      // vec3 finalColor = 1.0 - (1.0 - color) * (1.0 - vec3(0.2 * glowColor.r, 0.8 * glowColor.g, 0.2 * glowColor.b));
+      vec4 finalColor = 1.0 - (1.0 - color) * (1.0 - vec4(0.2 * glowColor.r, 0.8 * glowColor.g, 0.2 * glowColor.b, 1.0));
 
       // FINAL BLEND
-      float alphaOffset = smoothstep(0.8, 1.0, uOffset);
-      vec3 finalComp = mix(finalColor, background.rgb, alphaOffset);
+      float alphaOffset = smoothstep(0.6, 1.0, uOffset);
+      // vec3 finalComp = mix(finalColor, background.rgb, alphaOffset);
+      vec4 finalComp = mix(finalColor, background, alphaOffset);
 
-      gl_FragColor = vec4(finalComp, 1.0);
+      // gl_FragColor = vec4(finalComp, 1.0);
+      gl_FragColor = finalComp;
       // gl_FragColor = vec4(finalColor, 1.0);
     }
   `,
