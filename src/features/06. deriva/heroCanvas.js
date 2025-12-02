@@ -2,9 +2,9 @@ import gsap from 'gsap'
 import * as THREE from 'three'
 
 function canvas() {
-  // function isMobile(){
-  //   return window.innerWidth < 768
-  // }
+  function isMobile() {
+    return window.innerWidth < 768
+  }
 
   // ------------------------------- setup
 
@@ -16,26 +16,52 @@ function canvas() {
       .replace('github.com', 'cdn.jsdelivr.net/gh')
       .replace('/blob/', '@')
   }
-  // LUIS
-  const imgLuis = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWeb2.jpg'
-  )
-  const imgBass = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/a72ff98b763a73506e974baa9ff0de9b533d0906/static/derivaBass3.jpg'
-  )
+
   const bg = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebBG.jpg'
-  )
-  // LUIS
-  const mapLuis = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/derivaWebMask2.jpg'
-  )
-  const mapBass = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/a72ff98b763a73506e974baa9ff0de9b533d0906/static/derivaBassMask3.jpg'
+    'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/derivaWebBG.webp'
   )
   const perlinNoise = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/4c01e25f71a9b5bf1503472bfaa67e9bf10510f0/static/PerlinNoise.jpg'
+    'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/PerlinNoise.webp'
   )
+
+  // LUIS
+  let imgLuis
+  let mapLuis
+  if (isMobile()) {
+    imgLuis = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/LuisGrainMobile.webp'
+    )
+    mapLuis = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/LuisMaskMobile.webp'
+    )
+  } else {
+    imgLuis = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/LuisGrain.webp'
+    )
+    mapLuis = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/LuisMask.webp'
+    )
+  }
+
+  // BASS
+  let imgBass
+  let mapBass
+  if (isMobile()) {
+    imgBass = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/BassMobile.webp'
+    )
+    mapBass = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/BassMaskMobile.webp'
+    )
+  } else {
+    imgBass = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/BassGrain.webp'
+    )
+    mapBass = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/BassMask.webp'
+    )
+  }
+
   //
   // Canvas
   //
