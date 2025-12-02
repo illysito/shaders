@@ -66,7 +66,7 @@ function canvas() {
   // Canvas
   //
   const canvas = document.querySelector('#webgl')
-  const vh = window.visualViewport?.height || window.innerHeight
+  const vh = screen.height
   canvas.style.height = `${vh}px`
 
   //
