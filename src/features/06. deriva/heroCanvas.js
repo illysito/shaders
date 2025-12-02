@@ -17,12 +17,23 @@ function canvas() {
       .replace('/blob/', '@')
   }
 
-  const bg = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/derivaWebBG.webp'
-  )
-  const perlinNoise = githubToJsDelivr(
-    'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/PerlinNoise.webp'
-  )
+  let bg
+  let perlinNoise
+  if (isMobile()) {
+    bg = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/4093d33505b9cb53ce22261ed3988872888160d6/static/derivaWebBGMob.webp'
+    )
+    perlinNoise = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/4093d33505b9cb53ce22261ed3988872888160d6/static/PerlinNoiseMob.webp'
+    )
+  } else {
+    bg = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/derivaWebBG.webp'
+    )
+    perlinNoise = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/PerlinNoise.webp'
+    )
+  }
 
   // LUIS
   let imgLuis
