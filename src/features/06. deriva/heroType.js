@@ -23,10 +23,9 @@ function heroType() {
     counter += 0.01
 
     const sine = Math.sin(counter)
-    const cosine = Math.cos(counter)
 
     const mappedWeight1 = gsap.utils.mapRange(-1, 1, 100, 700, sine)
-    const mappedWeight2 = gsap.utils.mapRange(-1, 1, 4, 380, cosine)
+    const mappedWeight2 = gsap.utils.mapRange(-1, 1, 4, 380, -sine)
 
     gsap.set(deriva, {
       fontVariationSettings: `'wght' ${mappedWeight1}`,
