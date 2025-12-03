@@ -145,7 +145,7 @@ function canvas() {
   let computedOffset = 0.0
   let scrollLimit = 0
   if (isMobile()) {
-    scrollLimit = 900
+    scrollLimit = 1200
   } else {
     scrollLimit = 450
   }
@@ -360,10 +360,10 @@ function canvas() {
     fadeOut = Math.max(Math.min(fadeOut, 1), 0)
 
     // Choose which applies
-    computedOffset = scroll < 450 ? fadeIn : fadeOut
+    computedOffset = scroll < scrollLimit ? fadeIn : fadeOut
 
     // Swap textures
-    if (scroll > 450) {
+    if (scroll > scrollLimit) {
       swt = 1.0
     } else {
       swt = 0.0
