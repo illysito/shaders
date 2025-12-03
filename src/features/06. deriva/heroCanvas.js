@@ -31,7 +31,7 @@ function canvas() {
       'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/derivaWebBG.webp'
     )
     perlinNoise = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/4ab06e2c80843e140e8bc212035ddfb1a813a8b3/static/PerlinFog-07.webp'
+      'https://github.com/illysito/shaders/blob/6becd45f875c0fec1fc94ca2f6d8218e60293d7d/static/PerlinNoise.webp'
     )
   }
 
@@ -59,17 +59,17 @@ function canvas() {
   let mapBass
   if (isMobile()) {
     imgBass = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/775f82bada78482986f10c1ec436a51f6624ec70/static/DerivaBass2.jpg'
+      'https://github.com/illysito/shaders/blob/653d91a7e2f6a95c81508c715e48c32e41d3fb34/static/BassGrain3Mobile.jpg'
     )
     mapBass = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/775f82bada78482986f10c1ec436a51f6624ec70/static/DerivaBassMask2.jpg'
+      'https://github.com/illysito/shaders/blob/653d91a7e2f6a95c81508c715e48c32e41d3fb34/static/BassMaskMobile2.jpg'
     )
   } else {
     imgBass = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/BassGrain.webp'
+      'https://github.com/illysito/shaders/blob/6becd45f875c0fec1fc94ca2f6d8218e60293d7d/static/BassGrain2-3.webp'
     )
     mapBass = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/BassMask.webp'
+      'https://github.com/illysito/shaders/blob/6becd45f875c0fec1fc94ca2f6d8218e60293d7d/static/DerivaBassMask2-2.webp'
     )
   }
 
@@ -313,6 +313,7 @@ function canvas() {
 
   const plane = new THREE.Mesh(planeGeo, material)
   let planeScale = 0.4
+  plane.position.y = 0.2
   if (isMobile()) {
     planeScale = 0.9
     plane.position.y = 0.12
