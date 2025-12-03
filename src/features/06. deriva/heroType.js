@@ -9,7 +9,7 @@ function heroType() {
   const jazz = document.querySelector('.is--kini')
   const navItems = document.querySelectorAll('.nav-item')
   const socialLinks = document.querySelectorAll('.is--small')
-  const star = document.querySelector('.star-little')
+  const stars = document.querySelectorAll('.star-little')
   let marquee
   if (isMobile()) {
     marquee = document.querySelector('.hero-marquee-mobile')
@@ -163,11 +163,13 @@ function heroType() {
   // socialLinksMobile.style.top = `${topMargin}px`
 
   // STAR ROTATION
-  gsap.to(star, {
-    rotation: 360,
-    duration: 12,
-    ease: 'none',
-    repeat: -1,
+  stars.forEach((star, index) => {
+    gsap.to(star, {
+      rotation: 360,
+      duration: 12 - index,
+      ease: 'none',
+      repeat: -1,
+    })
   })
 }
 
