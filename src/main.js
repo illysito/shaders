@@ -7,6 +7,7 @@ import golUI from './features/05. game of life/gol_ui'
 // import countdown from './features/06. deriva/countdown'
 import heroCanvas from './features/06. deriva/heroCanvas'
 import heroType from './features/06. deriva/heroType'
+import infoType from './features/06. deriva/infoType'
 import program from './features/06. deriva/programType'
 
 import './styles/style.css'
@@ -35,6 +36,7 @@ function runDerivaFunctions() {
     heroCanvas()
   }
   heroType()
+  infoType()
   // countdown()
   program()
 }

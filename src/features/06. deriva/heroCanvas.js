@@ -147,7 +147,7 @@ function canvas() {
   if (isMobile()) {
     scrollLimit = 1200
   } else {
-    scrollLimit = 450
+    scrollLimit = 600
   }
   let swt = 0.0
   let planeGeo

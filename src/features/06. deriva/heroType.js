@@ -1,4 +1,7 @@
 import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 function heroType() {
   function isMobile() {
@@ -16,6 +19,8 @@ function heroType() {
   } else {
     marquee = document.querySelector('.hero-marquee')
   }
+  const heroSection = document.querySelector('.hero__section')
+  const heroTypeWrapper = document.querySelector('.menu-type-wrapper')
 
   // variable on mousemove or not (on mobile)
   let counter = 0
@@ -153,15 +158,6 @@ function heroType() {
     })
   }
 
-  // position socials on mobile
-  // const socialLinksMobile = document.querySelector('.is--socials')
-  // const vh = window.visualViewport?.height || window.innerHeight
-  // const height = socialLinksMobile.offsetHeight
-  // const bottomMargin = 12
-  // const topMargin = vh - height - bottomMargin
-  // console.log(topMargin)
-  // socialLinksMobile.style.top = `${topMargin}px`
-
   // STAR ROTATION
   stars.forEach((star, index) => {
     gsap.to(star, {
@@ -170,6 +166,17 @@ function heroType() {
       ease: 'none',
       repeat: -1,
     })
+  })
+
+  // PARALLAX
+  gsap.to(heroTypeWrapper, {
+    y: -120,
+    scrollTrigger: {
+      trigger: heroSection,
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true,
+    },
   })
 }
 
