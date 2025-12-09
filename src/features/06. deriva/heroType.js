@@ -10,9 +10,11 @@ function heroType() {
 
   const deriva = document.querySelector('.h1')
   const jazz = document.querySelector('.is--kini')
+  const claim = document.querySelector('.claim-h')
   const navItems = document.querySelectorAll('.nav-item')
   const socialLinks = document.querySelectorAll('.is--small')
   const stars = document.querySelectorAll('.star-little')
+
   let marquee
   if (isMobile()) {
     marquee = document.querySelector('.hero-marquee-mobile')
@@ -177,6 +179,23 @@ function heroType() {
       end: 'bottom top',
       scrub: true,
     },
+  })
+
+  // CLAIM VARIABLE
+  let mappedWeight3 = 100
+  function variableClaim() {
+    if (mappedWeight3 > 250) {
+      mappedWeight3 = 250
+    }
+    gsap.set(claim, {
+      fontVariationSettings: `'wght' ${mappedWeight3}`,
+    })
+    requestAnimationFrame(variableClaim)
+  }
+  variableClaim()
+
+  window.addEventListener('scroll', () => {
+    mappedWeight3 = gsap.utils.mapRange(0, 800, 100, 250, window.scrollY)
   })
 }
 
