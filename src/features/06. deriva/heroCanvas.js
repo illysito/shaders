@@ -40,17 +40,17 @@ function canvas() {
   let mapLuis
   if (isMobile()) {
     imgLuis = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/LuisGrainMobile.webp'
+      'https://github.com/illysito/shaders/blob/ca314c152e4a738c9492ab6954d1ceb98528570b/static/DerivaMainTextureLuisMobile.jpg'
     )
     mapLuis = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/299c70becbde653465762daaa2b91d0799fe0960/static/LuisMaskMobile.webp'
+      'https://github.com/illysito/shaders/blob/ca314c152e4a738c9492ab6954d1ceb98528570b/static/DerivaMainNoiseMapLuisMobile.jpg'
     )
   } else {
     imgLuis = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/e71d22a52a94c5d1deecacd1d453fbb080e9a70c/static/LuisGrainDktp.webp'
+      'https://github.com/illysito/shaders/blob/58bafaa70b5b2f17373a59b02927bb24d5432270/static/DerivaMainTextureLuis.jpg'
     )
     mapLuis = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/e71d22a52a94c5d1deecacd1d453fbb080e9a70c/static/LuisMaskDktp.webp'
+      'https://github.com/illysito/shaders/blob/017715a2929951855302760deb493a4c41dce542/static/DerivaMainNoiseMapLuis.jpg'
     )
   }
 
@@ -59,17 +59,17 @@ function canvas() {
   let mapBass
   if (isMobile()) {
     imgBass = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/653d91a7e2f6a95c81508c715e48c32e41d3fb34/static/BassGrain3Mobile.jpg'
+      'https://github.com/illysito/shaders/blob/ea274274000130190655b1c43173fe28fd503712/static/DerivaMainTextureBassMobile.jpg'
     )
     mapBass = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/653d91a7e2f6a95c81508c715e48c32e41d3fb34/static/BassMaskMobile2.jpg'
+      'https://github.com/illysito/shaders/blob/ea274274000130190655b1c43173fe28fd503712/static/DerivaMainNoiseMapMobile.jpg'
     )
   } else {
     imgBass = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/6becd45f875c0fec1fc94ca2f6d8218e60293d7d/static/BassGrain2-3.webp'
+      'https://github.com/illysito/shaders/blob/3058a4cf5a49ad2bbef6840fa5a0c0b16aeb13ab/static/DerivaMainTextureBass.jpg'
     )
     mapBass = githubToJsDelivr(
-      'https://github.com/illysito/shaders/blob/6becd45f875c0fec1fc94ca2f6d8218e60293d7d/static/DerivaBassMask2-2.webp'
+      'https://github.com/illysito/shaders/blob/07b9024784cc5447749e23cbc6742efcc7ff92d9/static/DerivaMainNoiseMap.jpg'
     )
   }
 
@@ -314,9 +314,11 @@ function canvas() {
   const plane = new THREE.Mesh(planeGeo, material)
   let planeScale = 0.4
   plane.position.y = 0.2
+  plane.position.x = -0.15
   if (isMobile()) {
     planeScale = 0.9
-    plane.position.y = 0.12
+    plane.position.y = 0.24
+    plane.position.x = 0
   }
 
   plane.scale.set(planeScale, planeScale, planeScale)
