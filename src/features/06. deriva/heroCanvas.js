@@ -317,7 +317,7 @@ function canvas() {
   plane.position.x = -0.15
   if (isMobile()) {
     planeScale = 0.9
-    plane.position.y = 0.24
+    plane.position.y = 0.12
     plane.position.x = 0
   }
 
@@ -343,10 +343,14 @@ function canvas() {
   //     computedOffset = 1.0
   //   }
   // })
-
+  let raisePlane = false
   window.addEventListener('scroll', () => {
     const scroll = window.scrollY
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+
+    if (scroll > 800) {
+      raisePlane = true
+    }
 
     // Fade in from 0 → 1 for the first 450px
     let fadeIn = gsap.utils.mapRange(0, scrollLimit, 0, 1, scroll)
@@ -382,6 +386,12 @@ function canvas() {
     material.uniforms.uTime.value = t
     material.uniforms.uOffset.value = computedOffset
     material.uniforms.uSw.value = swt
+
+    if (isMobile() && raisePlane) {
+      plane.position.y = 0.24
+    } else if (isMobile() && !raisePlane) {
+      plane.position.y = 0.12
+    }
 
     // Render
     requestAnimationFrame(tick)
