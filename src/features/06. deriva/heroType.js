@@ -10,7 +10,8 @@ function heroType() {
 
   const deriva = document.querySelector('.h1')
   const jazz = document.querySelector('.is--kini')
-  const claim = document.querySelector('.claim-h')
+  const claim =
+    document.querySelector('.claim-h') || document.querySelector('.claim-h-mob')
   const navItems = document.querySelectorAll('.nav-item')
   const socialLinks = document.querySelectorAll('.is--small')
   const stars = document.querySelectorAll('.star-little')
@@ -181,11 +182,21 @@ function heroType() {
     },
   })
 
+  gsap.to(claim, {
+    y: -40,
+    scrollTrigger: {
+      trigger: heroSection,
+      start: 'bottom bottom',
+      end: 'bottom top',
+      scrub: true,
+    },
+  })
+
   // CLAIM VARIABLE
   let mappedWeight3 = 100
   function variableClaim() {
-    if (mappedWeight3 > 250) {
-      mappedWeight3 = 250
+    if (mappedWeight3 > 350) {
+      mappedWeight3 = 350
     }
     gsap.set(claim, {
       fontVariationSettings: `'wght' ${mappedWeight3}`,
@@ -195,7 +206,7 @@ function heroType() {
   variableClaim()
 
   window.addEventListener('scroll', () => {
-    mappedWeight3 = gsap.utils.mapRange(0, 800, 100, 250, window.scrollY)
+    mappedWeight3 = gsap.utils.mapRange(0, 800, 100, 350, window.scrollY)
   })
 }
 

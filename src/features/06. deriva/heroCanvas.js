@@ -73,6 +73,18 @@ function canvas() {
     )
   }
 
+  // POSTERS
+  let firstImpulsePoster
+  let anaAyalaPoster
+  if (!isMobile()) {
+    firstImpulsePoster = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/9359176878bbdb99f7ea4044592d0c1e888eb9c0/static/LUIS%20YELLOU.webp'
+    )
+    anaAyalaPoster = githubToJsDelivr(
+      'https://github.com/illysito/shaders/blob/18711607743999489b3ae6c96114c05980e60ff2/static/ANA%20AYALA%20BLU.webp'
+    )
+  }
+
   //
   // Canvas
   //
@@ -97,6 +109,9 @@ function canvas() {
   const perlinTexture = textureLoader.load(perlinNoise)
   const background = textureLoader.load(bg)
   // imgTexture.colorSpace = THREE.SRGBColorSpace;
+  const firstImpulse = textureLoader.load(firstImpulsePoster)
+  const anaAyala = textureLoader.load(anaAyalaPoster)
+  const posters = [firstImpulse, anaAyala]
 
   //
   // Camera
@@ -185,6 +200,7 @@ function canvas() {
     uniform sampler2D uDistortionMap2;
     uniform sampler2D uPerlin;
     uniform sampler2D uBG;
+    uniform vec2 uMouse;
     uniform float uOffset;
     uniform float uTime;
     uniform float uSw;
@@ -246,13 +262,12 @@ function canvas() {
       // noise *= 2.0 * distMap;
 
       vec2 noiseUv = vec2(
-        uv.x + 0.002 * sin(0.4 * uTime * noise  + uTime) + 0.2 * sin(uTime) * perlinMap.r * uOffset,
+        uv.x  +  0.002 * sin(0.4 * uTime * noise  + uTime)  +  0.2 * sin(uTime) * perlinMap.r * uOffset,
         // uv.x,
-        uv.y + 0.004 * cos(0.2 * uTime * noise) + 2.0 * perlinMap.r * uOffset 
+        uv.y  +  0.004 * cos(0.2 * uTime * noise)  +  2.0 * perlinMap.r * uOffset 
         // uv.y + perlinMap.r * uOffset
       );
       
-
       vec4 distortionMap = texture2D(uDistortionMap, noiseUv);
       vec4 distortionMap2 = texture2D(uDistortionMap2, noiseUv);
       vec4 distortionMapFinal = mix(distortionMap, distortionMap2, uSw);
@@ -294,6 +309,7 @@ function canvas() {
       // SCREEN BLEND
       // vec3 finalColor = 1.0 - (1.0 - color) * (1.0 - vec3(0.2 * glowColor.r, 0.8 * glowColor.g, 0.2 * glowColor.b));
       vec4 finalColor = 1.0 - (1.0 - color) * (1.0 - vec4(0.2 * glowColor.r, 0.8 * glowColor.g, 0.2 * glowColor.b, 1.0));
+      finalColor *= background;
 
       // FINAL BLEND
       float alphaOffset = smoothstep(0.6, 1.0, uOffset);
@@ -324,6 +340,124 @@ function canvas() {
   plane.scale.set(planeScale, planeScale, planeScale)
   scene.add(plane)
 
+  let posterOffset = 0.0
+  let posterIndex = 0
+  console.log(posters[posterIndex])
+  const imgMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+      uTexture: { value: posters[posterIndex] },
+      uPerlin: { value: perlinTexture },
+      uBG: { value: background },
+      uOffset: { value: posterOffset },
+      uTime: { value: 0.0 }, // optional if you want animation
+    },
+    vertexShader: `
+    varying vec2 vUv;
+
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+    fragmentShader: `
+    varying vec2 vUv;
+    uniform sampler2D uTexture;
+    uniform sampler2D uPerlin;
+    uniform sampler2D uBG;
+    uniform float uTime;
+    uniform float uOffset;
+
+    void main() {
+
+      // UV
+
+      vec2 uv = vUv;
+
+      // PERLIN DISP
+
+      float displacementCoef = 0.4;
+
+      vec4 perlinMap = texture2D(uPerlin, uv);
+
+      // PERLIN SAMPLING
+
+      float displaceForce1 = perlinMap.r * uOffset * displacementCoef;
+      vec2 uvDisplaced1 = vec2(uv.x + sin(uTime) * displaceForce1, uv.y + displaceForce1);
+
+      float displaceForce2 = perlinMap.r * (1.0 - uOffset) * displacementCoef;
+      vec2 uvDisplaced2 = vec2(uv.x + cos(uTime) * displaceForce2, uv.y + displaceForce1);
+
+      vec4 tex = texture2D(uTexture, uvDisplaced1);
+      vec4 bg = texture2D(uBG, uvDisplaced2);
+      vec4 img = (tex * (1.0 - uOffset) + bg * uOffset);
+    
+      gl_FragColor = img;
+    }
+  `,
+  })
+  const imgPlaneGeo = new THREE.PlaneGeometry(4, 5, 1, 1)
+  const imgMesh = new THREE.Mesh(imgPlaneGeo, imgMaterial)
+  imgMesh.scale.set(0.32, 0.32, 0.32)
+  imgMesh.position.x = 1.8
+  scene.add(imgMesh)
+  const imgMaterial2 = new THREE.ShaderMaterial({
+    uniforms: {
+      uTexture: { value: posters[posterIndex] },
+      uPerlin: { value: perlinTexture },
+      uBG: { value: background },
+      uOffset: { value: posterOffset },
+      uTime: { value: 0.0 }, // optional if you want animation
+    },
+    vertexShader: `
+    varying vec2 vUv;
+
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+    fragmentShader: `
+    varying vec2 vUv;
+    uniform sampler2D uTexture;
+    uniform sampler2D uPerlin;
+    uniform sampler2D uBG;
+    uniform float uTime;
+    uniform float uOffset;
+
+    void main() {
+
+      // UV
+
+      vec2 uv = vUv;
+
+      // PERLIN DISP
+
+      float displacementCoef = 0.4;
+
+      vec4 perlinMap = texture2D(uPerlin, uv);
+
+      // PERLIN SAMPLING
+
+      float displaceForce1 = perlinMap.r * uOffset * displacementCoef;
+      vec2 uvDisplaced1 = vec2(uv.x + sin(uTime) * displaceForce1, uv.y + displaceForce1);
+
+      float displaceForce2 = perlinMap.r * (1.0 - uOffset) * displacementCoef;
+      vec2 uvDisplaced2 = vec2(uv.x + cos(uTime) * displaceForce2, uv.y + displaceForce1);
+
+      vec4 tex = texture2D(uTexture, uvDisplaced1);
+      vec4 bg = texture2D(uBG, uvDisplaced2);
+      vec4 img = (tex * (1.0 - uOffset) + bg * uOffset);
+    
+      gl_FragColor = img;
+    }
+  `,
+  })
+  const imgPlaneGeo2 = new THREE.PlaneGeometry(4, 5, 1, 1)
+  const imgMesh2 = new THREE.Mesh(imgPlaneGeo2, imgMaterial2)
+  imgMesh2.scale.set(0.32, 0.32, 0.32)
+  imgMesh2.position.x = -1.8
+  scene.add(imgMesh2)
+
   //
   // Renderer
   //
@@ -336,13 +470,22 @@ function canvas() {
 
   // ------------------------------- animate & render!
 
-  // window.addEventListener('scroll', () => {
-  //   const scroll = window.scrollY
-  //   computedOffset = gsap.utils.mapRange(0, 450, 0, 1, scroll)
-  //   if (computedOffset > 1) {
-  //     computedOffset = 1.0
-  //   }
-  // })
+  const eventTitles = document.querySelectorAll('.event-title-2')
+  eventTitles.forEach((title, index) => {
+    title.addEventListener('mouseover', () => {
+      posterIndex = index
+      gsap.to([imgMaterial.uniforms.uOffset, imgMaterial2.uniforms.uOffset], {
+        value: 0.0,
+        duration: 0.6,
+      })
+    })
+    title.addEventListener('mouseleave', () => {
+      gsap.to([imgMaterial.uniforms.uOffset, imgMaterial2.uniforms.uOffset], {
+        value: 1.0,
+        duration: 0.6,
+      })
+    })
+  })
   let raisePlane = false
   window.addEventListener('scroll', () => {
     const scroll = window.scrollY
@@ -384,6 +527,10 @@ function canvas() {
 
     // UNIFORMS
     material.uniforms.uTime.value = t
+    imgMaterial.uniforms.uTime.value = t
+    imgMaterial.uniforms.uTexture.value = posters[posterIndex]
+    imgMaterial2.uniforms.uTime.value = t
+    imgMaterial2.uniforms.uTexture.value = posters[posterIndex]
     material.uniforms.uOffset.value = computedOffset
     material.uniforms.uSw.value = swt
 
