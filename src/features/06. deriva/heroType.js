@@ -88,42 +88,44 @@ function heroType() {
   }
 
   // variable on hover
-  navItems.forEach((item) => {
-    item.addEventListener('mouseover', () => {
-      gsap.to(item, {
-        // color: '#2020dd',
-        fontVariationSettings: `'wght' ${450}`,
-        duration: 0.4,
+  if (isMobile()) {
+    navItems.forEach((item) => {
+      item.addEventListener('mouseover', () => {
+        gsap.to(item, {
+          // color: '#2020dd',
+          fontVariationSettings: `'wght' ${450}`,
+          duration: 0.4,
+        })
+      })
+      item.addEventListener('mouseleave', () => {
+        gsap.to(item, {
+          // color: '#202020',
+          fontVariationSettings: `'wght' ${200}`,
+          duration: 0.4,
+        })
       })
     })
-    item.addEventListener('mouseleave', () => {
-      gsap.to(item, {
-        // color: '#202020',
-        fontVariationSettings: `'wght' ${200}`,
-        duration: 0.4,
+    socialLinks.forEach((item) => {
+      item.addEventListener('mouseover', () => {
+        gsap.to(item, {
+          // color: '#2020dd',
+          fontVariationSettings: `'wght' ${450}`,
+          duration: 0.4,
+        })
+      })
+      item.addEventListener('mouseleave', () => {
+        let w = 200
+        if (isMobile()) {
+          w = 300
+        }
+        gsap.to(item, {
+          // color: '#202020',
+          fontVariationSettings: `'wght' ${w}`,
+          duration: 0.4,
+        })
       })
     })
-  })
-  socialLinks.forEach((item) => {
-    item.addEventListener('mouseover', () => {
-      gsap.to(item, {
-        // color: '#2020dd',
-        fontVariationSettings: `'wght' ${450}`,
-        duration: 0.4,
-      })
-    })
-    item.addEventListener('mouseleave', () => {
-      let w = 200
-      if (isMobile()) {
-        w = 300
-      }
-      gsap.to(item, {
-        // color: '#202020',
-        fontVariationSettings: `'wght' ${w}`,
-        duration: 0.4,
-      })
-    })
-  })
+  }
 
   // marquee
   const whiteMarquee = marquee.querySelectorAll('.is--white')
