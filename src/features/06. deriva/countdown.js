@@ -2,6 +2,7 @@ import gsap from 'gsap'
 
 function countdown() {
   const preloader = document.querySelector('.preloader__section')
+  const circle = document.querySelector('.circle-overlay')
   const count = document.querySelector('.loading-h')
   const header = document.querySelector('.preloader-h')
 
@@ -22,24 +23,24 @@ function countdown() {
         delay: 0.8,
         opacity: 0,
         duration: 0.8,
+      })
+      gsap.to(circle, {
+        delay: 1.0,
+        yPercent: -100,
+        duration: 1.6,
+        ease: 'expo.inOut',
         onComplete: () => {
-          gsap.to(preloader, {
-            delay: 0.2,
-            opacity: 0,
-            duration: 1.6,
-            onComplete: () => {
-              gsap.set(preloader, {
-                zIndex: -30,
-              })
-            },
+          gsap.set(preloader, {
+            zIndex: -30,
           })
+          document.body.classList.remove('no--scroll')
         },
       })
     }
   }
 
   function variableType() {
-    counter += 0.02
+    counter += 0.03
 
     const sine = Math.sin(counter)
 
@@ -52,13 +53,8 @@ function countdown() {
     requestAnimationFrame(variableType)
   }
 
-  if (localStorage.getItem('isPreloaderShown') != 'true') {
-    preloader.classList.add('is--active')
-    fakePreloader()
-    variableType()
-  }
-
-  localStorage.setItem('isPreloaderShown', 'true')
+  fakePreloader()
+  variableType()
 }
 
 export default countdown

@@ -2,6 +2,10 @@
   visibility: hidden !important;
 }
 
+body.no--scroll {
+  overflow: hidden;
+}
+
 #texture-canvas {
   /* border: 1px solid blue; */
   width: 36svh;
