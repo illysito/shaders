@@ -4,7 +4,7 @@ import mouseDispUI from './features/03. mouse-displacement/mouseDisp_ui'
 import heroDispUI from './features/04. hero-displacement/heroDisp_ui'
 import golUI from './features/05. game of life/gol_ui'
 //-----------//
-// import countdown from './features/06. deriva/countdown'
+import countdown from './features/06. deriva/countdown'
 import heroCanvas from './features/06. deriva/heroCanvas'
 import heroType from './features/06. deriva/heroType'
 import infoType from './features/06. deriva/infoType'
@@ -32,13 +32,13 @@ function runShaderFunctions() {
 }
 
 function runDerivaFunctions() {
+  countdown()
   const canvas = document.querySelector('#webgl')
   if (canvas) {
     heroCanvas()
   }
   heroType()
   infoType()
-  // countdown()
   program()
 }
 
