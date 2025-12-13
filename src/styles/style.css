@@ -6,6 +6,12 @@ body.no--scroll {
   overflow: hidden;
 }
 
+a,
+button,
+[role='button'] {
+  -webkit-tap-highlight-color: transparent;
+}
+
 #texture-canvas {
   /* border: 1px solid blue; */
   width: 36svh;
