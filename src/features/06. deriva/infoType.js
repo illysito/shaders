@@ -13,6 +13,7 @@ function infoType() {
   const infoItems = document.querySelectorAll('.info-item')
   const infoPs = document.querySelectorAll('.info-p')
   const footerLinks = document.querySelectorAll('.footer-link')
+  const infoHeaders = document.querySelectorAll('.info-header')
 
   // PARALLAX
   gsap.to(heroTypeWrapper, {
@@ -25,26 +26,49 @@ function infoType() {
     },
   })
 
+  // INFO HEADERS
+  infoHeaders.forEach((i) => {
+    if (i.classList.contains('is--first')) return
+
+    gsap.to(i, {
+      yPercent: 100,
+      scrollTrigger: {
+        trigger: i,
+        start: 'top 96%',
+        end: 'top 4%',
+        scrub: true,
+      },
+    })
+  })
+
   // INFO ITEMS HOVER
-  infoItems.forEach((title, index) => {
-    title.addEventListener('mouseover', () => {
-      gsap.to(infoItems, {
-        fontVariationSettings: `'wght' ${200}`,
-        duration: 0.4,
-      })
-      infoPs.forEach((p) => {
-        gsap.to(p, {
-          opacity: 0,
-          duration: 0.1,
-        })
-      })
-      gsap.to(infoItems[index], {
-        fontVariationSettings: `'wght' ${400}`,
-        duration: 0.4,
-      })
+  function displayInfo(index) {
+    if (!infoPs[index].classList.contains('is-open')) {
+      infoPs[index].classList.add('is-open')
       gsap.to(infoPs[index], {
         opacity: 1,
-        duration: 0.1,
+        height: 'auto',
+        marginBottom: 64,
+        duration: 0.8,
+        ease: 'power2.out',
+      })
+    } else {
+      infoPs[index].classList.remove('is-open')
+      gsap.to(infoPs[index], {
+        opacity: 0,
+        height: 0,
+        marginBottom: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+      })
+    }
+  }
+
+  infoItems.forEach((title, index) => {
+    title.addEventListener('mouseover', () => {
+      gsap.to(title, {
+        fontVariationSettings: `'wght' ${400}`,
+        duration: 0.4,
       })
     })
     title.addEventListener('mouseleave', () => {
@@ -52,10 +76,9 @@ function infoType() {
         fontVariationSettings: `'wght' ${200}`,
         duration: 0.4,
       })
-      gsap.to(infoItems[index], {
-        fontVariationSettings: `'wght' ${400}`,
-        duration: 0.4,
-      })
+    })
+    title.addEventListener('click', () => {
+      displayInfo(index)
     })
   })
 

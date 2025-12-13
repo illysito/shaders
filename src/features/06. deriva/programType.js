@@ -10,6 +10,9 @@ function program() {
   const titles = document.querySelectorAll('.event-title-2')
   const imgWrapper = document.querySelector('.hover-img-wrapper')
   const imgHover = document.querySelectorAll('.img-hover')
+  const downloadLinkWrapper = document.querySelector('.download-link')
+  const downloadLink = document.querySelector('.download-item')
+  const downloadImg = document.querySelector('.download-img')
 
   function fadeInOut(el) {
     gsap
@@ -40,8 +43,11 @@ function program() {
   })
 
   // HOVER ON TITLES
+  // let isScrolling = false
+  // let scrollTimeout
   titles.forEach((title, index) => {
     title.addEventListener('mouseover', () => {
+      // if (!isScrolling) {
       gsap.to(title, {
         fontVariationSettings: `'wght' ${400}`,
         duration: 0.6,
@@ -50,14 +56,11 @@ function program() {
         opacity: 1,
         duration: 0.1,
       })
-      gsap.to(imgHover, {
-        opacity: 0,
-        duration: 0.1,
-      })
       gsap.to(imgHover[index], {
-        opacity: 1,
+        zIndex: 1,
         duration: 0.1,
       })
+      // }
     })
     title.addEventListener('mouseleave', () => {
       gsap.to(title, {
@@ -67,33 +70,100 @@ function program() {
       gsap.to(imgWrapper, {
         opacity: 0,
         duration: 0.1,
+        onComplete: () => {
+          gsap.to(imgHover[index], {
+            zIndex: 0,
+            duration: 0.1,
+          })
+        },
       })
     })
   })
 
+  // DOWNLOAD BUTTON
+  gsap.to(downloadImg, {
+    yPercent: -48,
+    scale: 1.15,
+    duration: 4,
+    yoyo: true,
+    repeat: -1,
+    ease: 'power2.inOut',
+  })
+  downloadLinkWrapper.addEventListener('mouseover', () => {
+    gsap.to(downloadLinkWrapper, {
+      scale: 0.97,
+      duration: 0.2,
+      ease: 'none',
+    })
+    gsap.to(downloadLink, {
+      fontVariationSettings: `'wght' ${300}`,
+      color: '#fffbf6',
+      duration: 0.4,
+    })
+    gsap.to(downloadImg, {
+      // yPercent: -24,
+      opacity: 1,
+      duration: 0.4,
+      ease: 'power2.inOut',
+    })
+  })
+  downloadLinkWrapper.addEventListener('mouseleave', () => {
+    gsap.to(downloadLinkWrapper, {
+      scale: 1,
+      duration: 0.2,
+      ease: 'none',
+    })
+    gsap.to(downloadLink, {
+      fontVariationSettings: `'wght' ${250}`,
+      color: '#202020',
+      duration: 0.4,
+    })
+    gsap.to(downloadImg, {
+      // yPercent: 0,
+      opacity: 0,
+      duration: 0.4,
+      ease: 'power2.inOut',
+    })
+  })
+
   // MOUSETRACKED IMG
+  let mouseClientX = 0
+  let mouseClientY = 0
   let mouseX = 0
   let mouseY = 0
-  let currentX = 0
-  let lerpFactor = 0.9
   const width = imgWrapper.clientWidth
   const height = imgWrapper.clientHeight
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight
 
-  function lerp(start, end, amount) {
-    return start + (end - start) * amount
-  }
-
-  window.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX
-    mouseY = e.clientY + window.scrollY
+  function updateMouse() {
+    mouseX = mouseClientX
+    mouseY = mouseClientY + window.scrollY
 
     if (mouseX > window.innerWidth - width) {
       mouseX = window.innerWidth - width
     }
+    if (mouseY > maxScroll - height) {
+      mouseY = window.innerWidth - height
+    }
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    mouseClientX = e.clientX
+    mouseClientY = e.clientY
+    updateMouse()
+  })
+
+  window.addEventListener('scroll', () => {
+    updateMouse()
+
+    // isScrolling = true
+    // clearTimeout(scrollTimeout)
+    // scrollTimeout = setTimeout(() => {
+    //   isScrolling = false
+    // }, 20)
   })
 
   function animate() {
-    currentX = lerp(currentX, mouseX, lerpFactor)
     imgWrapper.style.transform = `translate(${mouseX - width / 2}px, ${
       mouseY - height / 2
     }px)`

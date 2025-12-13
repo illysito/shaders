@@ -9,6 +9,7 @@ import heroCanvas from './features/06. deriva/heroCanvas'
 import heroType from './features/06. deriva/heroType'
 import infoType from './features/06. deriva/infoType'
 import program from './features/06. deriva/programType'
+import asciiCanvas from './features/07. ascii/asciiCanvas'
 
 import './styles/style.css'
 
@@ -41,5 +42,10 @@ function runDerivaFunctions() {
   program()
 }
 
+function runAsciiFunctions() {
+  asciiCanvas()
+}
+
 if (document.body.classList.contains('shaders__body')) runShaderFunctions()
 if (document.body.classList.contains('deriva__body')) runDerivaFunctions()
+if (document.body.classList.contains('ascii__body')) runAsciiFunctions()

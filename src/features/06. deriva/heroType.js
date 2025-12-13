@@ -12,7 +12,7 @@ function heroType() {
   const jazz = document.querySelector('.is--kini')
   const claim =
     document.querySelector('.claim-h') || document.querySelector('.claim-h-mob')
-  const navItems = document.querySelectorAll('.nav-item')
+  const navItems = document.querySelectorAll('.nav-item-mobile')
   const socialLinks = document.querySelectorAll('.is--small')
   const stars = document.querySelectorAll('.star-little')
 
@@ -25,7 +25,7 @@ function heroType() {
   const heroSection = document.querySelector('.hero__section')
   const heroTypeWrapper = document.querySelector('.menu-type-wrapper')
 
-  // variable on mousemove or not (on mobile)
+  // variable on mobile
   let counter = 0
   function variableType() {
     counter += 0.008
@@ -46,32 +46,42 @@ function heroType() {
     requestAnimationFrame(variableType)
   }
 
+  // variable on PC
+  let targetX = 0
+  let currentX = 0
+  const lerp = (a, b, t) => a + (b - a) * t
+  function animateWeight() {
+    currentX = lerp(currentX, targetX, 0.16)
+
+    let mappedWeight1 = gsap.utils.mapRange(
+      0.1 * window.innerWidth,
+      window.innerWidth,
+      100,
+      700,
+      currentX
+    )
+    let mappedWeight2 = gsap.utils.mapRange(
+      0,
+      window.innerWidth * 0.9,
+      360,
+      4,
+      currentX
+    )
+
+    gsap.set(deriva, {
+      fontVariationSettings: `'wght' ${mappedWeight1}`,
+    })
+
+    gsap.set(jazz, {
+      fontVariationSettings: `'wght' ${mappedWeight2}`,
+    })
+    requestAnimationFrame(animateWeight)
+  }
+
   if (!isMobile()) {
+    animateWeight()
     window.addEventListener('mousemove', (e) => {
-      const x = e.clientX
-
-      let mappedWeight1 = gsap.utils.mapRange(
-        0.1 * window.innerWidth,
-        window.innerWidth,
-        100,
-        700,
-        x
-      )
-      let mappedWeight2 = gsap.utils.mapRange(
-        0,
-        window.innerWidth * 0.9,
-        360,
-        4,
-        x
-      )
-
-      gsap.set(deriva, {
-        fontVariationSettings: `'wght' ${mappedWeight1}`,
-      })
-
-      gsap.set(jazz, {
-        fontVariationSettings: `'wght' ${mappedWeight2}`,
-      })
+      targetX = e.clientX
     })
   } else {
     variableType()
@@ -183,11 +193,11 @@ function heroType() {
   })
 
   gsap.to(claim, {
-    y: -40,
+    y: -80,
     scrollTrigger: {
       trigger: heroSection,
       start: 'bottom bottom',
-      end: 'bottom top',
+      end: 'bottom -50%',
       scrub: true,
     },
   })
