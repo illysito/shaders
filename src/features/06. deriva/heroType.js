@@ -88,7 +88,7 @@ function heroType() {
   }
 
   // variable on hover
-  if (isMobile()) {
+  if (!isMobile()) {
     navItems.forEach((item) => {
       item.addEventListener('mouseover', () => {
         gsap.to(item, {

@@ -64,8 +64,8 @@ function infoType() {
     }
   }
 
-  if (!isMobile()) {
-    infoItems.forEach((title, index) => {
+  infoItems.forEach((title, index) => {
+    if (!isMobile()) {
       title.addEventListener('mouseover', () => {
         gsap.to(title, {
           fontVariationSettings: `'wght' ${400}`,
@@ -78,11 +78,11 @@ function infoType() {
           duration: 0.4,
         })
       })
-      title.addEventListener('click', () => {
-        displayInfo(index)
-      })
+    }
+    title.addEventListener('click', () => {
+      displayInfo(index)
     })
-  }
+  })
 
   // FOOTER ITEMS ON HOVER
   if (!isMobile()) {
