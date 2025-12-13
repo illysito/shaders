@@ -4,9 +4,9 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 function infoType() {
-  // function isMobile() {
-  //   return window.innerWidth < 768
-  // }
+  function isMobile() {
+    return window.innerWidth < 768
+  }
 
   const heroSection = document.querySelector('.hero__section')
   const heroTypeWrapper = document.querySelector('.menu-type-wrapper')
@@ -64,41 +64,45 @@ function infoType() {
     }
   }
 
-  infoItems.forEach((title, index) => {
-    title.addEventListener('mouseover', () => {
-      gsap.to(title, {
-        fontVariationSettings: `'wght' ${400}`,
-        duration: 0.4,
+  if (!isMobile()) {
+    infoItems.forEach((title, index) => {
+      title.addEventListener('mouseover', () => {
+        gsap.to(title, {
+          fontVariationSettings: `'wght' ${400}`,
+          duration: 0.4,
+        })
+      })
+      title.addEventListener('mouseleave', () => {
+        gsap.to(title, {
+          fontVariationSettings: `'wght' ${200}`,
+          duration: 0.4,
+        })
+      })
+      title.addEventListener('click', () => {
+        displayInfo(index)
       })
     })
-    title.addEventListener('mouseleave', () => {
-      gsap.to(title, {
-        fontVariationSettings: `'wght' ${200}`,
-        duration: 0.4,
-      })
-    })
-    title.addEventListener('click', () => {
-      displayInfo(index)
-    })
-  })
+  }
 
   // FOOTER ITEMS ON HOVER
-  footerLinks.forEach((link) => {
-    link.addEventListener('mouseover', (e) => {
-      const a = e.currentTarget.firstElementChild
-      gsap.to(a, {
-        fontVariationSettings: `'wght' ${250}`,
-        duration: 0.4,
+  if (!isMobile()) {
+    footerLinks.forEach((link) => {
+      link.addEventListener('mouseover', (e) => {
+        const a = e.currentTarget.firstElementChild
+        gsap.to(a, {
+          fontVariationSettings: `'wght' ${250}`,
+          duration: 0.4,
+        })
+      })
+      link.addEventListener('mouseleave', (e) => {
+        const a = e.currentTarget.firstElementChild
+        gsap.to(a, {
+          fontVariationSettings: `'wght' ${800}`,
+          duration: 0.4,
+        })
       })
     })
-    link.addEventListener('mouseleave', (e) => {
-      const a = e.currentTarget.firstElementChild
-      gsap.to(a, {
-        fontVariationSettings: `'wght' ${800}`,
-        duration: 0.4,
-      })
-    })
-  })
+  }
 }
 
 export default infoType

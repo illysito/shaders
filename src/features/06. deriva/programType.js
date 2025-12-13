@@ -14,6 +14,10 @@ function program() {
   const downloadLink = document.querySelector('.download-item')
   const downloadImg = document.querySelector('.download-img')
 
+  function isMobile() {
+    return window.innerWidth < 768
+  }
+
   function fadeInOut(el) {
     gsap
       .timeline({
@@ -43,42 +47,42 @@ function program() {
   })
 
   // HOVER ON TITLES
-  // let isScrolling = false
-  // let scrollTimeout
-  titles.forEach((title, index) => {
-    title.addEventListener('mouseover', () => {
-      // if (!isScrolling) {
-      gsap.to(title, {
-        fontVariationSettings: `'wght' ${400}`,
-        duration: 0.6,
+  if (!isMobile()) {
+    titles.forEach((title, index) => {
+      title.addEventListener('mouseover', () => {
+        // if (!isScrolling) {
+        gsap.to(title, {
+          fontVariationSettings: `'wght' ${400}`,
+          duration: 0.6,
+        })
+        gsap.to(imgWrapper, {
+          opacity: 1,
+          duration: 0.1,
+        })
+        gsap.to(imgHover[index], {
+          zIndex: 1,
+          duration: 0.1,
+        })
+        // }
       })
-      gsap.to(imgWrapper, {
-        opacity: 1,
-        duration: 0.1,
+      title.addEventListener('mouseleave', () => {
+        gsap.to(title, {
+          fontVariationSettings: `'wght' ${250}`,
+          duration: 0.6,
+        })
+        gsap.to(imgWrapper, {
+          opacity: 0,
+          duration: 0.1,
+          onComplete: () => {
+            gsap.to(imgHover[index], {
+              zIndex: 0,
+              duration: 0.1,
+            })
+          },
+        })
       })
-      gsap.to(imgHover[index], {
-        zIndex: 1,
-        duration: 0.1,
-      })
-      // }
     })
-    title.addEventListener('mouseleave', () => {
-      gsap.to(title, {
-        fontVariationSettings: `'wght' ${250}`,
-        duration: 0.6,
-      })
-      gsap.to(imgWrapper, {
-        opacity: 0,
-        duration: 0.1,
-        onComplete: () => {
-          gsap.to(imgHover[index], {
-            zIndex: 0,
-            duration: 0.1,
-          })
-        },
-      })
-    })
-  })
+  }
 
   // DOWNLOAD BUTTON
   gsap.to(downloadImg, {
@@ -89,42 +93,44 @@ function program() {
     repeat: -1,
     ease: 'power2.inOut',
   })
-  downloadLinkWrapper.addEventListener('mouseover', () => {
-    gsap.to(downloadLinkWrapper, {
-      scale: 0.97,
-      duration: 0.2,
-      ease: 'none',
+  if (!isMobile()) {
+    downloadLinkWrapper.addEventListener('mouseover', () => {
+      gsap.to(downloadLinkWrapper, {
+        scale: 0.97,
+        duration: 0.2,
+        ease: 'none',
+      })
+      gsap.to(downloadLink, {
+        fontVariationSettings: `'wght' ${300}`,
+        color: '#fffbf6',
+        duration: 0.4,
+      })
+      gsap.to(downloadImg, {
+        // yPercent: -24,
+        opacity: 1,
+        duration: 0.4,
+        ease: 'power2.inOut',
+      })
     })
-    gsap.to(downloadLink, {
-      fontVariationSettings: `'wght' ${300}`,
-      color: '#fffbf6',
-      duration: 0.4,
+    downloadLinkWrapper.addEventListener('mouseleave', () => {
+      gsap.to(downloadLinkWrapper, {
+        scale: 1,
+        duration: 0.2,
+        ease: 'none',
+      })
+      gsap.to(downloadLink, {
+        fontVariationSettings: `'wght' ${250}`,
+        color: '#202020',
+        duration: 0.4,
+      })
+      gsap.to(downloadImg, {
+        // yPercent: 0,
+        opacity: 0,
+        duration: 0.4,
+        ease: 'power2.inOut',
+      })
     })
-    gsap.to(downloadImg, {
-      // yPercent: -24,
-      opacity: 1,
-      duration: 0.4,
-      ease: 'power2.inOut',
-    })
-  })
-  downloadLinkWrapper.addEventListener('mouseleave', () => {
-    gsap.to(downloadLinkWrapper, {
-      scale: 1,
-      duration: 0.2,
-      ease: 'none',
-    })
-    gsap.to(downloadLink, {
-      fontVariationSettings: `'wght' ${250}`,
-      color: '#202020',
-      duration: 0.4,
-    })
-    gsap.to(downloadImg, {
-      // yPercent: 0,
-      opacity: 0,
-      duration: 0.4,
-      ease: 'power2.inOut',
-    })
-  })
+  }
 
   // MOUSETRACKED IMG
   let mouseClientX = 0
@@ -147,21 +153,17 @@ function program() {
     }
   }
 
-  window.addEventListener('mousemove', (e) => {
-    mouseClientX = e.clientX
-    mouseClientY = e.clientY
-    updateMouse()
-  })
+  if (!isMobile()) {
+    window.addEventListener('mousemove', (e) => {
+      mouseClientX = e.clientX
+      mouseClientY = e.clientY
+      updateMouse()
+    })
 
-  window.addEventListener('scroll', () => {
-    updateMouse()
-
-    // isScrolling = true
-    // clearTimeout(scrollTimeout)
-    // scrollTimeout = setTimeout(() => {
-    //   isScrolling = false
-    // }, 20)
-  })
+    window.addEventListener('scroll', () => {
+      updateMouse()
+    })
+  }
 
   function animate() {
     imgWrapper.style.transform = `translate(${mouseX - width / 2}px, ${
@@ -174,7 +176,9 @@ function program() {
 
     requestAnimationFrame(animate)
   }
-  animate()
+  if (!isMobile()) {
+    animate()
+  }
 }
 
 export default program
