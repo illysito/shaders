@@ -10,6 +10,7 @@ import heroType from './features/06. deriva/heroType'
 import infoType from './features/06. deriva/infoType'
 import program from './features/06. deriva/programType'
 import asciiCanvas from './features/07. ascii/asciiCanvas'
+import peso from './features/08. peso/peso'
 
 import './styles/style.css'
 
@@ -46,6 +47,11 @@ function runAsciiFunctions() {
   asciiCanvas()
 }
 
+function runPesoFunctions() {
+  peso()
+}
+
 // if (document.body.classList.contains('shaders__body')) runShaderFunctions()
 if (document.body.classList.contains('deriva__body')) runDerivaFunctions()
 if (document.body.classList.contains('ascii__body')) runAsciiFunctions()
+if (document.body.classList.contains('peso__body')) runPesoFunctions()
