@@ -165,20 +165,20 @@ function program() {
     })
   }
 
-  function animate() {
-    imgWrapper.style.transform = `translate(${mouseX - width / 2}px, ${
-      mouseY - height / 2
-    }px)`
-    gsap.to(imgHover, {
-      x: 0.25 * (mouseX - window.innerWidth / 2),
-      duration: 0.4,
-    })
+  // function animate() {
+  //   imgWrapper.style.transform = `translate(${mouseX - width / 2}px, ${
+  //     mouseY - height / 2
+  //   }px)`
+  //   gsap.to(imgHover, {
+  //     x: 0.25 * (mouseX - window.innerWidth / 2),
+  //     duration: 0.4,
+  //   })
 
-    requestAnimationFrame(animate)
-  }
-  if (!isMobile()) {
-    animate()
-  }
+  //   requestAnimationFrame(animate)
+  // }
+  // if (!isMobile()) {
+  //   animate()
+  // }
 }
 
 export default program
