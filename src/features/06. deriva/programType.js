@@ -12,7 +12,7 @@ function program() {
   const imgHover = document.querySelectorAll('.img-hover')
   const downloadLinkWrapper = document.querySelector('.download-link')
   const downloadLink = document.querySelector('.download-item')
-  const downloadImg = document.querySelector('.download-img')
+  // const downloadImg = document.querySelector('.download-img')
 
   function isMobile() {
     return window.innerWidth < 768
@@ -85,50 +85,54 @@ function program() {
   }
 
   // DOWNLOAD BUTTON
-  gsap.to(downloadImg, {
-    yPercent: -48,
-    scale: 1.15,
-    duration: 4,
-    yoyo: true,
-    repeat: -1,
-    ease: 'power2.inOut',
-  })
+  // gsap.to(downloadImg, {
+  //   yPercent: -48,
+  //   scale: 1.15,
+  //   duration: 4,
+  //   yoyo: true,
+  //   repeat: -1,
+  //   ease: 'power2.inOut',
+  // })
   if (!isMobile()) {
     downloadLinkWrapper.addEventListener('mouseover', () => {
       gsap.to(downloadLinkWrapper, {
         scale: 0.97,
-        duration: 0.2,
-        ease: 'none',
+        backgroundColor: '#202020',
+        duration: 0.6,
+        ease: 'power2.inOut',
       })
       gsap.to(downloadLink, {
         fontVariationSettings: `'wght' ${300}`,
         color: '#fffbf6',
-        duration: 0.4,
-      })
-      gsap.to(downloadImg, {
-        // yPercent: -24,
-        opacity: 1,
-        duration: 0.4,
+        duration: 0.6,
         ease: 'power2.inOut',
       })
+      // gsap.to(downloadImg, {
+      //   // yPercent: -24,
+      //   opacity: 1,
+      //   duration: 0.4,
+      //   ease: 'power2.inOut',
+      // })
     })
     downloadLinkWrapper.addEventListener('mouseleave', () => {
       gsap.to(downloadLinkWrapper, {
         scale: 1,
-        duration: 0.2,
-        ease: 'none',
+        duration: 0.6,
+        backgroundColor: '#20202000',
+        ease: 'power2.inOut',
       })
       gsap.to(downloadLink, {
         fontVariationSettings: `'wght' ${250}`,
         color: '#202020',
-        duration: 0.4,
-      })
-      gsap.to(downloadImg, {
-        // yPercent: 0,
-        opacity: 0,
-        duration: 0.4,
+        duration: 0.6,
         ease: 'power2.inOut',
       })
+      // gsap.to(downloadImg, {
+      //   // yPercent: 0,
+      //   opacity: 0,
+      //   duration: 0.4,
+      //   ease: 'power2.inOut',
+      // })
     })
   }
 
