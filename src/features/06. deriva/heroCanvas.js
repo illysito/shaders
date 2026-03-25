@@ -353,7 +353,7 @@ function canvas() {
   plane.position.x = -0.15
   if (isMobile()) {
     planeScale = 0.86
-    plane.position.y = 0.24
+    plane.position.y = 0.44
     plane.position.x = 0
   }
 
