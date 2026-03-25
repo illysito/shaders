@@ -8,9 +8,9 @@ body {
   visibility: hidden !important;
 }
 
-/* body.no--scroll {
+body.no--scroll {
   overflow: hidden;
-} */
+}
 
 a,
 button,
