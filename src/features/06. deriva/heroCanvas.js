@@ -104,7 +104,7 @@ function canvas() {
   // Scene
   //
   const scene = new THREE.Scene()
-  // scene.background = new THREE.Color(0xffffff);
+  scene.background = new THREE.Color(0xfffbf6)
 
   //
   // Textures
