@@ -1,3 +1,9 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
 .w-webflow-badge {
   visibility: hidden !important;
 }
@@ -96,6 +102,7 @@ button,
 
   .preloader__section {
     height: calc(var(--app-h-safari));
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 
