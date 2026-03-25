@@ -93,6 +93,10 @@ button,
     position: fixed;
     z-index: -1;
   }
+
+  .preloader__section {
+    height: calc(var(--app-h-safari));
+  }
 }
 
 /* #webgl {
